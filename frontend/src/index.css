@@ -10,22 +10,20 @@
   box-sizing: border-box;
 }
 
-/* index.css */
 body {
   transition: background-color 0.3s, color 0.3s;
-  /* overflow-x: hidden; Prevent horizontal scrollbar */
 }
 
 /* Navbar Styling */
-#menu-container #menu{
-  transition: all .3s ease-in;
+#menu-container #menu {
+  transition: all 0.3s ease-in;
 }
 
-#menu-container:hover #menu{
+#menu-container:hover #menu {
   @apply flex flex-col top-[56px];
 }
 
-.theme-switcher-label {
+/* .theme-switcher-label {
   cursor: pointer;
 }
 
@@ -40,41 +38,10 @@ body {
 
 .theme-switcher-label:not(.active) .dark-text {
   display: none;
-}
+} */
 
 .btn-transition {
   transition: all 0.5s ease-in-out;
-}
-
-.menu-main .react-tabs__tab {
-  position: static;
-}
-
-.menu-main .react-tabs__tab-list {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-bottom: none;
-  margin-bottom: 4rem;
-}
-
-.menu-main .react-tabs__tab {
-  @apply text-dark dark:text-white;
-  width: fit-content;
-  transition: all 0.4s;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  text-decoration: none;
-  list-style: none;
-}
-
-.menu-main .react-tabs__tab:hover {
-  @apply text-primary;
-}
-
-.menu-main .react-tabs__tab--selected {
-  @apply text-primary dark:text-primary border-none bg-transparent;
 }
 
 body::-webkit-scrollbar {

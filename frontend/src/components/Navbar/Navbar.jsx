@@ -28,7 +28,7 @@ const Navbar = () => {
         </Link>
       </div>
       <div id="menu" className="flex items-center gap-4">
-        <ul className="flex items-center">
+        <ul className="flex items-center text-sm">
           {user ? (
             <li id="menu-container" className="relative w-[100px] text-center">
               <Link className="p-4 w-full inline-block" to="/profile">
@@ -65,7 +65,7 @@ const Navbar = () => {
           )}
 
           <li className=" w-[100px] text-center">
-            <Link className="p-4" to="/cart">
+            <Link className="p-4 flex items-center gap-1" to="/cart">
               Cart{" "}
               {cart.count > 0 && (
                 <span
