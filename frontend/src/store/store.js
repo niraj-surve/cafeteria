@@ -3,7 +3,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import productSlice from "./productSlice";
 import persistedReducer from "./cartSlice";
-import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistStore } from "redux-persist"; // Import persistStore correctly
+import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistStore } from "redux-persist";
 
 const store = configureStore({
   reducer: {
