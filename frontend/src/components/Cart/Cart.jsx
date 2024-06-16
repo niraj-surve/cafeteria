@@ -62,7 +62,7 @@ const Cart = () => {
             >
               <div className="flex items-center space-x-4">
                 <img
-                  src={item.image}
+                  src={`../../assets/coffee/${item.image}`}
                   alt={item.name}
                   className="w-16 h-16 object-cover rounded"
                 />
@@ -101,9 +101,7 @@ const Cart = () => {
           ))}
           <div className="flex justify-between mt-4">
             <p className="text-xl font-bold">Total: ₹ {totalPrice}</p>
-            <button
-              className="bg-success text-white px-4 py-2 rounded hover:bg-success focus:outline-none"
-            >
+            <button className="bg-success text-white px-4 py-2 rounded hover:bg-success focus:outline-none">
               Checkout
             </button>
           </div>

@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "moduleResolution": "node",
+    },
+    "include": [
+        "src",
+        "server.js"
+    ],
+}

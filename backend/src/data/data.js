@@ -1,9 +1,3 @@
-import Espresso from "../assets/coffee/Espresso.png";
-import Cappuccino from "../assets/coffee/Cappuccino.png";
-import Latte from "../assets/coffee/Latte.png";
-import Americano from "../assets/coffee/Americano.png";
-import Mocha from "../assets/coffee/Mocha.png";
-
 export const coffeeData = [
   {
     id: 1,
@@ -13,7 +7,7 @@ export const coffeeData = [
     favourite: true,
     origins: ["italy", "brazil"],
     stars: 5,
-    image: Espresso,
+    image: "Espresso.png",
     tags: ["strong", "short", "black"],
     description:
       "A concentrated coffee brewed by forcing a small amount of nearly boiling water through finely ground coffee beans.",
@@ -26,7 +20,7 @@ export const coffeeData = [
     favourite: false,
     origins: ["italy", "colombia"],
     stars: 4,
-    image: Cappuccino,
+    image: "Cappuccino.png",
     tags: ["frothy", "milky", "light"],
     description:
       "An espresso-based coffee drink that originated in Italy, with steamed milk and a creamy foam topping.",
@@ -39,7 +33,7 @@ export const coffeeData = [
     favourite: true,
     origins: ["france", "guatemala"],
     stars: 4,
-    image: Latte,
+    image: "Latte.png",
     tags: ["creamy", "smooth", "light"],
     description:
       "A coffee drink made with espresso and steamed milk, often topped with a small amount of foam.",
@@ -52,7 +46,7 @@ export const coffeeData = [
     favourite: false,
     origins: ["usa", "ethiopia"],
     stars: 3,
-    image: Americano,
+    image: "Americano.png",
     tags: ["strong", "black"],
     description:
       "A coffee drink prepared by diluting espresso with hot water, giving it a similar strength to drip coffee, but different flavor.",
@@ -65,7 +59,7 @@ export const coffeeData = [
     favourite: true,
     origins: ["yemen", "colombia"],
     stars: 5,
-    image: Mocha,
+    image: "Mocha.png",
     tags: ["chocolate", "sweet", "milky"],
     description:
       "A coffee drink that combines espresso, hot milk, and chocolate, often topped with whipped cream.",

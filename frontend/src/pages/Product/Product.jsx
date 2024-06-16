@@ -59,7 +59,7 @@ const Product = () => {
     <div className="max-w-4xl mx-auto p-8">
       <div className="flex flex-col md:flex-row items-center md:items-start">
         <img
-          src={product?.image}
+          src={`../../assets/coffee/${product?.image}`}
           alt={product?.name}
           className="w-full md:w-1/2 object-cover rounded-lg shadow-md"
         />
@@ -83,7 +83,7 @@ const Product = () => {
             Price: <span className="text-success">₹ {product?.price}</span>
           </p>
           <p className="text-lg mt-2">
-            Time required to cook: {product?.cookTime} min  utes
+            Time required to cook: {product?.cookTime} min utes
           </p>
           <div className="mt-4">
             <span className="text-lg font-semibold">Origins: </span>
@@ -117,7 +117,10 @@ const Product = () => {
               readonly
             />
           </div>
-          <button className="mt-4 flex items-center bg-primary rounded-full font-opensans" onClick={handleAddToCart}>
+          <button
+            className="mt-4 flex items-center bg-primary rounded-full font-opensans"
+            onClick={handleAddToCart}
+          >
             <span className="bg-white relative left-[6px] rounded-full p-1">
               <MdOutlineShoppingCart className="text-primary rounded-full" />
             </span>
