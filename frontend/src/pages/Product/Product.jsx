@@ -59,7 +59,7 @@ const Product = () => {
     <div className="max-w-4xl mx-auto p-8">
       <div className="flex flex-col md:flex-row items-center md:items-start">
         <img
-          src={`../../assets/coffee/${product?.image}`}
+          src={`/coffee/${product?.image}`}
           alt={product?.name}
           className="w-full md:w-1/2 object-cover rounded-lg shadow-md"
         />

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 import StatusCode from "../util/StatusCode";
-import { coffeeData } from "../data/data";
 
 const initialState = {
   data: [],
@@ -9,16 +9,19 @@ const initialState = {
   error: null,
 };
 
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+// API URL
+const API_URL = "http://localhost:3000/api/v1/products";
 
+// Fetch coffee data from the API
 const fetchCoffeeData = async () => {
-  await delay(100);
-  return coffeeData;
+  const response = await axios.get(API_URL);
+  return response.data;
 };
 
+// Fetch coffee data by ID from the API
 const fetchCoffeeById = async (id) => {
-  await delay(100);
-  return coffeeData.find((item) => item.id === parseInt(id));
+  const response = await axios.get(`${API_URL}/${id}`);
+  return response.data;
 };
 
 export const getProducts = createAsyncThunk("product/loadData", async () => {
@@ -49,7 +52,7 @@ const productSlice = createSlice({
     builder
       .addCase(getProducts.pending, (state) => {
         state.status = StatusCode.LOADING;
-        state.error = null; 
+        state.error = null;
       })
       .addCase(getProducts.fulfilled, (state, action) => {
         state.data = action.payload;
