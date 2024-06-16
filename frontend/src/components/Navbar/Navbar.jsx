@@ -2,15 +2,16 @@ import React from "react";
 import DarkLogo from "../../assets/logo-dark.png";
 import LightLogo from "../../assets/logo-light.png";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux"; // Import useSelector
+import { MdOutlineShoppingCart } from "react-icons/md";
 
 const Navbar = () => {
   const user = {
     name: "John",
   };
 
-  const cart = {
-    count: 10,
-  };
+  // Use useSelector to get cart state from Redux store
+  const cart = useSelector((state) => state.cart);
 
   const logout = () => {};
 
@@ -21,8 +22,8 @@ const Navbar = () => {
           to="/"
           className="flex items-center text-2xl font-black dark:text-white font-opensans"
         >
-          <img src={DarkLogo} width={40} />
-          <span className="max-sm:hidden">
+          <img src={DarkLogo} width={40} alt="Logo" />
+          <span className="max-sm:hidden text-dark">
             Cafe<span className="text-primary">teria</span>
           </span>
         </Link>
@@ -67,14 +68,12 @@ const Navbar = () => {
           <li className=" w-[100px] text-center">
             <Link className="p-4 flex items-center gap-1" to="/cart">
               Cart{" "}
-              {cart.count > 0 && (
                 <span
                   id="count"
-                  className="bg-primary text-white px-[0.38rem] py-[0.30rem] rounded-full text-xs"
+                  className="bg-primary text-white px-2 py-1 rounded-full text-xs"
                 >
-                  {cart.count}
+                  {cart.items.length}
                 </span>
-              )}
             </Link>
           </li>
         </ul>

@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { keyframes } from "@emotion/react";
 import Rating from "react-rating";
 import { FaStar, FaHeart, FaRegHeart, FaSearch } from "react-icons/fa";
 import Reveal from "react-awesome-reveal";
 import StatusCode from "../../util/StatusCode";
+import { Link } from "react-router-dom";
+import { MdOutlineShoppingCart } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../../store/cartSlice";
+import toast from "react-hot-toast";
+import { clearCart } from "../../store/cartSlice";
 
 const fadeInRight = keyframes`
   from {
@@ -15,8 +21,27 @@ const fadeInRight = keyframes`
 `;
 
 const ProductCards = ({ products, status }) => {
+  const dispatch = useDispatch();
+
   const [selectedTag, setSelectedTag] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+
+  const handleAddToCart = (product) => {
+    dispatch(
+      addToCart({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+      })
+    );
+
+    // Show toast notification
+    toast.success(`${product.name} added to cart!`, {
+      position: "bottom-right",
+      duration: 3000,
+    });
+  };
 
   const tags = [
     { display: "ALL", value: "all" },
@@ -84,18 +109,20 @@ const ProductCards = ({ products, status }) => {
           return (
             <Reveal key={id} keyframes={fadeInRight} delay={100} triggerOnce>
               <div
-                className="max-md:w-[300px] md:w-[280px] h-[440px] max-sm:text-sm bg-white p-8 rounded-lg hover:scale-[1.01] hover:duration-[300ms] hover:cursor-pointer"
+                className="max-md:w-[300px] md:w-[280px] h-[440px] max-sm:text-sm bg-white p-8 rounded-lg hover:cursor-pointer"
                 style={{
                   animationDelay: `100ms`,
                   boxShadow: "0 0 5px gray",
                 }}
               >
                 <div className="flex flex-col gap-6 items-center">
-                  <img
-                    className="rounded-lg"
-                    src={image}
-                    alt={`${name} Image`}
-                  />
+                  <Link to={`/product/${id}`}>
+                    <img
+                      className="rounded-lg"
+                      src={image}
+                      alt={`${name} Image`}
+                    />
+                  </Link>
                   <div className="w-full flex flex-col gap-2 font-mulish">
                     <button className="absolute">
                       {favourite ? (
@@ -112,7 +139,9 @@ const ProductCards = ({ products, status }) => {
                       readonly
                     />
                     <div className="flex gap-2 justify-between">
-                      <h3 className="text-dark font-bold text-lg">{name}</h3>
+                      <Link to={`/product/${id}`}>
+                        <h3 className="text-dark font-bold text-lg">{name}</h3>
+                      </Link>
                       <span className="text-xs border border-primary text-muted px-2 py-1 rounded-full shadow-4xl">
                         {tags[0]}
                       </span>
@@ -120,6 +149,17 @@ const ProductCards = ({ products, status }) => {
                     <div className="flex flex-col gap-2 justify-between w-full text-sm">
                       <span>Price: ₹{price}</span>
                     </div>
+                    <button
+                      className="mt-2 flex items-center bg-primary rounded-full font-opensans w-fit self-center hover:scale-[1.02] hover:duration-[300ms]"
+                      onClick={() => handleAddToCart(product)}
+                    >
+                      <span className="bg-white relative left-[6px] rounded-full p-1">
+                        <MdOutlineShoppingCart className="text-primary rounded-full" />
+                      </span>
+                      <span className="py-2 px-4 text-white bg-primary rounded-full uppercase text-sm font-bold">
+                        Add to cart
+                      </span>
+                    </button>
                   </div>
                 </div>
               </div>
