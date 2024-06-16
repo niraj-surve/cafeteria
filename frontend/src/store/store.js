@@ -1,5 +1,3 @@
-// store.js
-
 import { configureStore } from "@reduxjs/toolkit";
 import productSlice from "./productSlice";
 import persistedReducer from "./cartSlice";
