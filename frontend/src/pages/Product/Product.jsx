@@ -8,6 +8,7 @@ import { FaHeart, FaRegHeart, FaStar } from "react-icons/fa";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { addToCart } from "../../store/cartSlice";
 import toast from "react-hot-toast";
+import NotFound from "../NotFound/NotFound";
 
 const Product = () => {
   const dispatch = useDispatch();
@@ -46,9 +47,7 @@ const Product = () => {
 
   if (status === StatusCode.ERROR) {
     return (
-      <div className="text-red-500 text-center">
-        Error loading product: {error}
-      </div>
+      <NotFound />
     );
   }
 

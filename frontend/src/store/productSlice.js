@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import StatusCode from "../util/StatusCode"; // Assuming StatusCode is correctly defined elsewhere
-import { coffeeData } from "../data/data"; // Assuming coffeeData is correctly imported
+import StatusCode from "../util/StatusCode";
+import { coffeeData } from "../data/data";
 
 const initialState = {
   data: [],
   product: null,
   status: StatusCode.IDLE,
-  error: null, // Add error state to handle errors properly
+  error: null,
 };
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -49,29 +49,29 @@ const productSlice = createSlice({
     builder
       .addCase(getProducts.pending, (state) => {
         state.status = StatusCode.LOADING;
-        state.error = null; // Reset error state on pending
+        state.error = null; 
       })
       .addCase(getProducts.fulfilled, (state, action) => {
         state.data = action.payload;
         state.status = StatusCode.IDLE;
-        state.error = null; // Reset error state on success
+        state.error = null;
       })
       .addCase(getProducts.rejected, (state) => {
         state.status = StatusCode.ERROR;
-        state.error = "Failed to fetch data"; // Set appropriate error message
+        state.error = "Failed to fetch data";
       })
       .addCase(getProductById.pending, (state) => {
         state.status = StatusCode.LOADING;
-        state.error = null; // Reset error state on pending
+        state.error = null;
       })
       .addCase(getProductById.fulfilled, (state, action) => {
         state.product = action.payload;
         state.status = StatusCode.IDLE;
-        state.error = null; // Reset error state on success
+        state.error = null;
       })
       .addCase(getProductById.rejected, (state, action) => {
         state.status = StatusCode.ERROR;
-        state.error = action.payload; // Set error message from rejectWithValue
+        state.error = action.payload;
       });
   },
 });

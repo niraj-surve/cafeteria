@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { keyframes } from "@emotion/react";
 import Rating from "react-rating";
 import { FaStar, FaHeart, FaRegHeart, FaSearch } from "react-icons/fa";
@@ -6,10 +6,9 @@ import Reveal from "react-awesome-reveal";
 import StatusCode from "../../util/StatusCode";
 import { Link } from "react-router-dom";
 import { MdOutlineShoppingCart } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/cartSlice";
 import toast from "react-hot-toast";
-import { clearCart } from "../../store/cartSlice";
 
 const fadeInRight = keyframes`
   from {
@@ -36,7 +35,6 @@ const ProductCards = ({ products, status }) => {
       })
     );
 
-    // Show toast notification
     toast.success(`${product.name} added to cart!`, {
       position: "bottom-right",
       duration: 3000,
@@ -52,7 +50,6 @@ const ProductCards = ({ products, status }) => {
     { display: "LIGHT", value: "light" },
   ];
 
-  // Filter products based on selected tag and search query
   const filteredProducts = products.filter((product) => {
     const matchesTag =
       selectedTag === "all" || product.tags.includes(selectedTag);
@@ -174,7 +171,7 @@ const ProductCards = ({ products, status }) => {
             triggerOnce
           >
             <div className="text-center text-primary text-xl font-mulish">
-              No products match the selected tag and search query!
+              No products match the search query!
             </div>
           </Reveal>
         )}
