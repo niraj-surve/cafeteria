@@ -1,19 +1,40 @@
-import React from 'react'
-import { Route, Routes } from 'react-router-dom'
-import Home from './pages/Home/Home'
-import Product from './pages/Product/Product'
-import Cart from './components/Cart/Cart'
-import NotFound from './pages/NotFound/NotFound'
+import React, { useEffect } from "react";
+import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import Home from "./pages/Home/Home";
+import Product from "./pages/Product/Product";
+import Cart from "./components/Cart/Cart";
+import NotFound from "./pages/NotFound/NotFound";
+import Login from "./pages/Login/Login";
+import { checkLoginStatus } from "./store/userSlice";
 
 const AppRoutes = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user, status } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(checkLoginStatus());
+  }, [dispatch]);
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
   return (
     <Routes>
-      <Route path='/' element={<Home />} />
-      <Route path='/product/:id' element={<Product />} />
-      <Route path='/cart' element={<Cart />} />
-      <Route path='/*' element={<NotFound />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/product/:id" element={<Product />} />
+      <Route path="/cart" element={<Cart />} />
+      {/* Redirect to home if user is logged in and tries to access login page */}
+      {!user ? (
+        <Route path="/login" element={<Login />} />
+      ) : (
+        <Route path="/login" element={<Navigate to="/" replace />} />
+      )}
+      <Route path="/*" element={<NotFound />} />
     </Routes>
-  )
-}
+  );
+};
 
-export default AppRoutes
+export default AppRoutes;

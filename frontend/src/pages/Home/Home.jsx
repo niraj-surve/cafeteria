@@ -8,7 +8,6 @@ const Home = () => {
   const { data: products, tags, status } = useSelector((state) => state.product);
 
   useEffect(() => {
-    console.log(tags)
     dispatch(getProducts())
   }, [dispatch]);
 

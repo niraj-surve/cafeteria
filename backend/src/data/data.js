@@ -73,3 +73,22 @@ export const coffeeData = [
       "A coffee drink that combines espresso, hot milk, and chocolate, often topped with whipped cream.",
   },
 ];
+
+export const users = [
+  {
+    id: 1,
+    name: "John Doe",
+    email: "john@gmail.com",
+    password: "john@12345",
+    address: "Toronto",
+    isAdmin: false,
+  },
+  {
+    id: 2,
+    name: "Bob Johnson",
+    email: "bob@hotmail.com",
+    password: "bob@12345",
+    address: "Los Angeles",
+    isAdmin: true,
+  },
+];
