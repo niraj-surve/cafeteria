@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { getProductById, getProducts } from "../services/productService.js";
+import {
+  getProductById,
+  getProducts,  
+  toggleFavourite,
+} from "../services/productService.js";
 
 const router = Router();
 
@@ -8,5 +12,8 @@ router.get("/", getProducts);
 
 // Route to get a product by ID
 router.get("/product/:id", getProductById);
+
+// Route to toggle favorite status
+router.post("/product/favourite", toggleFavourite);
 
 export default router;

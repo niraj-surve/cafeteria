@@ -7,6 +7,7 @@ import {
   updateQuantity,
 } from "../../store/cartSlice";
 import { FaMinus, FaPlus } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -64,7 +65,14 @@ const Cart = () => {
       {status === "loading" && <p>Loading...</p>}
       {status === "failed" && <p>{error}</p>}
       {Array.isArray(items) && items.length === 0 ? (
-        <p className="text-center">Your cart is empty.</p>
+        <div className="relative top-40 flex flex-col items-center gap-4">
+          <p className="text-center font-mulish text-xl">Your cart is empty!</p>
+          <Link to={"/"}>
+            <button className="bg-success w-fit px-3 py-2 rounded-lg text-white font-opensans border border-success hover:bg-white hover:text-success btn-transition">
+              Explore Products
+            </button>
+          </Link>
+        </div>
       ) : (
         <div>
           {Array.isArray(items) &&
@@ -124,4 +132,4 @@ const Cart = () => {
   );
 };
 
-export default Cart;  
+export default Cart;

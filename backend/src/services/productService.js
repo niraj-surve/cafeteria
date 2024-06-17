@@ -2,8 +2,8 @@ import { coffeeData } from "../data/data.js";
 
 // Get all products
 export const getProducts = (req, res) => {
-    res.send(coffeeData);
-}
+  res.send(coffeeData);
+};
 
 // Get a product by id
 export const getProductById = (req, res) => {
@@ -11,6 +11,18 @@ export const getProductById = (req, res) => {
   const product = coffeeData.find((product) => product.id === id);
   if (product) {
     res.send(product);
+  } else {
+    res.status(404).send({ message: "Product not found" });
+  }
+};
+
+// Toggle favorite status for a product
+export const toggleFavourite = (req, res) => {
+  const { id, favourite } = req.body;
+  const product = coffeeData.find((product) => product.id === id);
+  if (product) {
+    product.favourite = favourite;
+    res.status(200).send(product); // Sending back updated product
   } else {
     res.status(404).send({ message: "Product not found" });
   }

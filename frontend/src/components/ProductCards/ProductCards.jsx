@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../store/cartSlice";
+import { toggleFavourite } from "../../store/productSlice"; // Import toggleFavourite action
 import toast from "react-hot-toast";
 
 const fadeInRight = keyframes`
@@ -43,6 +44,22 @@ const ProductCards = ({ products, status }) => {
     });
   };
 
+  const handleToggleFavourite = (product) => {
+    const newFavouriteStatus = !product.favourite;
+    dispatch(
+      toggleFavourite({ id: product.id, favourite: newFavouriteStatus })
+    );
+
+    newFavouriteStatus
+      ? toast.success(`${product.name} added to favourites!`, {
+          position: "bottom-right",
+          duration: 3000,
+        })
+      : toast.error(`${product.name} removed from favourites!`, {
+          position: "bottom-right",
+          duration: 3000,
+        });
+  };
 
   const tags = [
     { display: "ALL", value: "all" },
@@ -126,7 +143,10 @@ const ProductCards = ({ products, status }) => {
                     />
                   </Link>
                   <div className="w-full flex flex-col gap-2 font-mulish">
-                    <button className="absolute">
+                    <button
+                      className="absolute"
+                      onClick={() => handleToggleFavourite(product)}
+                    >
                       {favourite ? (
                         <FaHeart className="text-red-600 text-xl" />
                       ) : (
@@ -151,21 +171,22 @@ const ProductCards = ({ products, status }) => {
                     <div className="flex flex-col gap-2 justify-between w-full text-sm">
                       <span>Price: ₹{price}</span>
                     </div>
-                    {!isInCart ? (
-                      <button
-                        className="mt-2 flex items-center bg-primary rounded-full font-opensans w-fit self-center hover:scale-[1.02] hover:duration-[300ms]"
-                        onClick={() => handleAddToCart(product)}
-                      >
+                    <button
+                      className={`mt-2 flex items-center ${
+                        isInCart ? "bg-success" : "bg-primary"
+                      } rounded-full font-opensans w-fit self-center hover:scale-[1.02] hover:duration-[300ms]`}
+                      onClick={() => handleAddToCart(product)}
+                      disabled={isInCart}
+                    >
+                      {!isInCart && (
                         <span className="bg-white relative left-[6px] rounded-full p-1">
                           <MdOutlineShoppingCart className="text-primary rounded-full" />
                         </span>
-                        <span className="py-2 px-4 text-white bg-primary rounded-full uppercase text-sm font-bold">
-                          Add to cart
-                        </span>
-                      </button>
-                    ) : (
-                      <span className="text-green-600">In Cart</span>
-                    )}
+                      )}
+                      <span className="py-2 px-4 text-white rounded-full uppercase text-sm font-bold">
+                        {isInCart ? "In Cart" : "Add to cart"}
+                      </span>
+                    </button>
                   </div>
                 </div>
               </div>

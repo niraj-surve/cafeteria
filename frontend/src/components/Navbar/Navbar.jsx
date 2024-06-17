@@ -80,7 +80,6 @@ const Navbar = () => {
                 className="bg-primary text-white px-2 py-1 rounded-full text-xs"
               >
                 {cart.items.length}{" "}
-                {/* Display cart items length dynamically */}
               </span>
             </Link>
           </li>
