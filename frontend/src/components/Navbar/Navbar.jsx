@@ -1,17 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import DarkLogo from "../../assets/logo-dark.png";
 import LightLogo from "../../assets/logo-light.png";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux"; // Import useSelector
-import { MdOutlineShoppingCart } from "react-icons/md";
+import { useSelector, useDispatch } from "react-redux"; // Import useSelector and useDispatch
+import { fetchCartItems } from "../../store/cartSlice"; // Import fetchCartItems action
 
 const Navbar = () => {
   const user = {
     name: "John",
   };
 
+  const dispatch = useDispatch(); // Initialize useDispatch hook
+
   // Use useSelector to get cart state from Redux store
   const cart = useSelector((state) => state.cart);
+
+  useEffect(() => {
+    // Fetch cart items when the component mounts
+    dispatch(fetchCartItems());
+  }, [dispatch]);
 
   const logout = () => {};
 
@@ -68,12 +75,13 @@ const Navbar = () => {
           <li className=" w-[100px] text-center">
             <Link className="p-4 flex items-center gap-1" to="/cart">
               Cart{" "}
-                <span
-                  id="count"
-                  className="bg-primary text-white px-2 py-1 rounded-full text-xs"
-                >
-                  {cart.items.length}
-                </span>
+              <span
+                id="count"
+                className="bg-primary text-white px-2 py-1 rounded-full text-xs"
+              >
+                {cart.items.length}{" "}
+                {/* Display cart items length dynamically */}
+              </span>
             </Link>
           </li>
         </ul>

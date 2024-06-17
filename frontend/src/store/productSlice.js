@@ -2,6 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import StatusCode from "../util/StatusCode";
 
+const apiURL = import.meta.env.VITE_APP_API_URL;
+
 const initialState = {
   data: [],
   product: null,
@@ -9,18 +11,15 @@ const initialState = {
   error: null,
 };
 
-// API URL
-const API_URL = "http://localhost:3000/api/v1/products";
-
 // Fetch coffee data from the API
 const fetchCoffeeData = async () => {
-  const response = await axios.get(API_URL);
+  const response = await axios.get(`${apiURL}/products`);
   return response.data;
 };
 
 // Fetch coffee data by ID from the API
 const fetchCoffeeById = async (id) => {
-  const response = await axios.get(`${API_URL}/${id}`);
+  const response = await axios.get(`${apiURL}/products/product/${id}`);
   return response.data;
 };
 

@@ -15,13 +15,13 @@ const Product = () => {
   const { product, status, error } = useSelector((state) => state.product);
   const { id } = useParams();
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (product) => {
     dispatch(
       addToCart({
         id: product.id,
         name: product.name,
         price: product.price,
-        image: product.image
+        image: product.image,
       })
     );
 

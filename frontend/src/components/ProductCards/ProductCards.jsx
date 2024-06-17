@@ -6,7 +6,7 @@ import Reveal from "react-awesome-reveal";
 import StatusCode from "../../util/StatusCode";
 import { Link } from "react-router-dom";
 import { MdOutlineShoppingCart } from "react-icons/md";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../store/cartSlice";
 import toast from "react-hot-toast";
 
@@ -21,6 +21,8 @@ const fadeInRight = keyframes`
 
 const ProductCards = ({ products, status }) => {
   const dispatch = useDispatch();
+  const cartItems = useSelector((state) => state.cart.items);
+  const cartStatus = useSelector((state) => state.cart.status);
 
   const [selectedTag, setSelectedTag] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -40,6 +42,7 @@ const ProductCards = ({ products, status }) => {
       duration: 3000,
     });
   };
+
 
   const tags = [
     { display: "ALL", value: "all" },
@@ -61,7 +64,7 @@ const ProductCards = ({ products, status }) => {
     return matchesTag && matchesSearch;
   });
 
-  if (status === StatusCode.LOADING) {
+  if (status === StatusCode.LOADING || cartStatus === "loading") {
     return <div>Loading...</div>;
   }
 
@@ -103,6 +106,8 @@ const ProductCards = ({ products, status }) => {
       <div className="w-3/4 grid max-md:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 place-items-center gap-10">
         {filteredProducts.map((product) => {
           const { id, name, price, favourite, stars, image, tags } = product;
+          const isInCart = cartItems.some((item) => item.id === product.id);
+
           return (
             <Reveal key={id} keyframes={fadeInRight} delay={100} triggerOnce>
               <div
@@ -146,17 +151,21 @@ const ProductCards = ({ products, status }) => {
                     <div className="flex flex-col gap-2 justify-between w-full text-sm">
                       <span>Price: ₹{price}</span>
                     </div>
-                    <button
-                      className="mt-2 flex items-center bg-primary rounded-full font-opensans w-fit self-center hover:scale-[1.02] hover:duration-[300ms]"
-                      onClick={() => handleAddToCart(product)}
-                    >
-                      <span className="bg-white relative left-[6px] rounded-full p-1">
-                        <MdOutlineShoppingCart className="text-primary rounded-full" />
-                      </span>
-                      <span className="py-2 px-4 text-white bg-primary rounded-full uppercase text-sm font-bold">
-                        Add to cart
-                      </span>
-                    </button>
+                    {!isInCart ? (
+                      <button
+                        className="mt-2 flex items-center bg-primary rounded-full font-opensans w-fit self-center hover:scale-[1.02] hover:duration-[300ms]"
+                        onClick={() => handleAddToCart(product)}
+                      >
+                        <span className="bg-white relative left-[6px] rounded-full p-1">
+                          <MdOutlineShoppingCart className="text-primary rounded-full" />
+                        </span>
+                        <span className="py-2 px-4 text-white bg-primary rounded-full uppercase text-sm font-bold">
+                          Add to cart
+                        </span>
+                      </button>
+                    ) : (
+                      <span className="text-green-600">In Cart</span>
+                    )}
                   </div>
                 </div>
               </div>

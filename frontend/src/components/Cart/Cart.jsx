@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  fetchCartItems,
   removeFromCart,
   clearCart,
   updateQuantity,
@@ -9,7 +10,14 @@ import { FaMinus, FaPlus } from "react-icons/fa";
 
 const Cart = () => {
   const dispatch = useDispatch();
-  const cartItems = useSelector((state) => state.cart.items);
+  const cart = useSelector((state) => state.cart);
+  const { items = [], status, error } = cart;
+
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchCartItems());
+    }
+  }, [status, dispatch]);
 
   const handleRemoveItem = (itemId) => {
     dispatch(removeFromCart(itemId));
@@ -20,7 +28,7 @@ const Cart = () => {
   };
 
   const handleIncrement = (itemId) => {
-    const itemToUpdate = cartItems.find((item) => item.id === itemId);
+    const itemToUpdate = items.find((item) => item.id === itemId);
     if (itemToUpdate) {
       const newQuantity = itemToUpdate.quantity + 1;
       dispatch(updateQuantity({ id: itemId, quantity: newQuantity }));
@@ -28,17 +36,19 @@ const Cart = () => {
   };
 
   const handleDecrement = (itemId) => {
-    const itemToUpdate = cartItems.find((item) => item.id === itemId);
+    const itemToUpdate = items.find((item) => item.id === itemId);
     if (itemToUpdate && itemToUpdate.quantity > 1) {
       const newQuantity = itemToUpdate.quantity - 1;
       dispatch(updateQuantity({ id: itemId, quantity: newQuantity }));
     }
   };
 
-  // Calculate total price
-  const totalPrice = cartItems.reduce((total, item) => {
-    return total + item.price * item.quantity;
-  }, 0);
+  // Ensure items is always an array before using reduce
+  const totalPrice = Array.isArray(items)
+    ? items.reduce((total, item) => {
+        return total + item.price * item.quantity;
+      }, 0)
+    : 0;
 
   return (
     <div className="max-w-4xl mx-auto p-8">
@@ -51,54 +61,57 @@ const Cart = () => {
           Clear Cart
         </button>
       </div>
-      {cartItems.length === 0 ? (
+      {status === "loading" && <p>Loading...</p>}
+      {status === "failed" && <p>{error}</p>}
+      {Array.isArray(items) && items.length === 0 ? (
         <p className="text-center">Your cart is empty.</p>
       ) : (
         <div>
-          {cartItems.map((item) => (
-            <div
-              key={item.id}
-              className="flex items-center justify-between border-b border-gray-300 py-4"
-            >
-              <div className="flex items-center space-x-4">
-                <img
-                  src={`/coffee/${item.image}`}
-                  alt={item.name}
-                  className="w-16 h-16 object-cover rounded"
-                />
-                <div>
-                  <p className="font-bold">{item.name}</p>
-                  <p className="text-gray-600">Price: ₹ {item.price}</p>
-                  <div className="flex gap-2 items-center mt-2">
-                    <button
-                      onClick={() => handleDecrement(item.id)}
-                      className="bg-white border p-2 rounded-l"
-                    >
-                      <FaMinus className="text-primary" />
-                    </button>
-                    <input
-                      type="number"
-                      readOnly
-                      value={item.quantity}
-                      className="border border-gray-300 rounded p-1 text-center w-16 focus:outline-none cursor-default"
-                    />
-                    <button
-                      onClick={() => handleIncrement(item.id)}
-                      className="bg-white border p-2 rounded-r"
-                    >
-                      <FaPlus className="text-primary" />
-                    </button>
+          {Array.isArray(items) &&
+            items.map((item, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-between border-b border-gray-300 py-4"
+              >
+                <div className="flex items-center space-x-4">
+                  <img
+                    src={`/coffee/${item.image}`}
+                    alt={item.name}
+                    className="w-16 h-16 object-cover rounded"
+                  />
+                  <div>
+                    <p className="font-bold">{item.name}</p>
+                    <p className="text-gray-600">Price: ₹ {item.price}</p>
+                    <div className="flex gap-2 items-center mt-2">
+                      <button
+                        onClick={() => handleDecrement(item.id)}
+                        className="bg-white border p-2 rounded-l"
+                      >
+                        <FaMinus className="text-primary" />
+                      </button>
+                      <input
+                        type="number"
+                        readOnly
+                        value={item.quantity}
+                        className="border border-gray-300 rounded p-1 text-center w-16 focus:outline-none cursor-default"
+                      />
+                      <button
+                        onClick={() => handleIncrement(item.id)}
+                        className="bg-white border p-2 rounded-r"
+                      >
+                        <FaPlus className="text-primary" />
+                      </button>
+                    </div>
                   </div>
                 </div>
+                <button
+                  onClick={() => handleRemoveItem(item.id)}
+                  className="text-red-500 font-semibold focus:outline-none"
+                >
+                  Remove
+                </button>
               </div>
-              <button
-                onClick={() => handleRemoveItem(item.id)}
-                className="text-red-500 font-semibold focus:outline-none"
-              >
-                Remove
-              </button>
-            </div>
-          ))}
+            ))}
           <div className="flex justify-between mt-4">
             <p className="text-xl font-bold">Total: ₹ {totalPrice}</p>
             <button className="bg-success text-white px-4 py-2 rounded hover:bg-success focus:outline-none">
@@ -111,4 +124,4 @@ const Cart = () => {
   );
 };
 
-export default Cart;
+export default Cart;  

@@ -1,6 +1,6 @@
 export const coffeeData = [
   {
-    id: 1,
+    id: "1",
     name: "Espresso",
     cookTime: 5,
     price: 10,
@@ -13,7 +13,7 @@ export const coffeeData = [
       "A concentrated coffee brewed by forcing a small amount of nearly boiling water through finely ground coffee beans.",
   },
   {
-    id: 2,
+    id: "2",
     name: "Cappuccino",
     cookTime: 6,
     price: 20,
@@ -26,7 +26,7 @@ export const coffeeData = [
       "An espresso-based coffee drink that originated in Italy, with steamed milk and a creamy foam topping.",
   },
   {
-    id: 3,
+    id: "3",
     name: "Latte",
     cookTime: 7,
     price: 15,
@@ -39,7 +39,7 @@ export const coffeeData = [
       "A coffee drink made with espresso and steamed milk, often topped with a small amount of foam.",
   },
   {
-    id: 4,
+    id: "4",
     name: "Americano",
     cookTime: 4,
     price: 25,
@@ -52,7 +52,7 @@ export const coffeeData = [
       "A coffee drink prepared by diluting espresso with hot water, giving it a similar strength to drip coffee, but different flavor.",
   },
   {
-    id: 5,
+    id: "5",
     name: "Mocha",
     cookTime: 8,
     price: 25,

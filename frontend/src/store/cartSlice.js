@@ -1,51 +1,86 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
+const apiURL = import.meta.env.VITE_APP_API_URL;
+
+// Initial state
 const initialState = {
   items: [],
+  status: "idle", // For loading status
+  error: null, // For error handling
 };
 
+// Async thunks
+export const fetchCartItems = createAsyncThunk(
+  "cart/fetchCartItems",
+  async () => {
+    const response = await axios.get(`${apiURL}/cart`);
+    return response.data;
+  }
+);
+
+export const addToCart = createAsyncThunk("cart/addToCart", async (item) => {
+  const response = await axios.post(`${apiURL}/cart/add`, item);
+  return response.data;
+});
+
+export const updateQuantity = createAsyncThunk(
+  "cart/updateQuantity",
+  async ({ id, quantity }) => {
+    const response = await axios.put(`${apiURL}/cart/update`, { id, quantity });
+    return response.data;
+  }
+);
+
+export const removeFromCart = createAsyncThunk(
+  "cart/removeFromCart",
+  async (id) => {
+    const response = await axios.delete(`${apiURL}/cart/remove`, { data: { id } });
+    return response.data;
+  }
+);
+
+export const clearCart = createAsyncThunk("cart/clearCart", async () => {
+  const response = await axios.delete(`${apiURL}/cart/clear`);
+  return response.data;
+});
+
+// Slice
 const cartSlice = createSlice({
   name: "cart",
   initialState,
-  reducers: {
-    addToCart(state, action) {
-      const { id, name, price, image } = action.payload;
-      const existingItem = state.items.find((item) => item.id === id);
-
-      if (existingItem) {
-        existingItem.quantity++;
-      } else {
-        state.items.push({ id, name, price, image, quantity: 1 });
-      }
-    },
-    updateQuantity(state, action) {
-      const { id, quantity } = action.payload;
-      const itemToUpdate = state.items.find((item) => item.id === id);
-
-      if (itemToUpdate) {
-        itemToUpdate.quantity = quantity;
-      }
-    },
-    removeFromCart(state, action) {
-      const idToRemove = action.payload;
-      state.items = state.items.filter((item) => item.id !== idToRemove);
-    },
-    clearCart(state) {
-      state.items = [];
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      // Fetch Cart Items
+      .addCase(fetchCartItems.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchCartItems.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.items = action.payload;
+      })
+      .addCase(fetchCartItems.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      // Add to Cart
+      .addCase(addToCart.fulfilled, (state, action) => {
+        state.items = action.payload;
+      })
+      // Update Quantity
+      .addCase(updateQuantity.fulfilled, (state, action) => {
+        state.items = action.payload;
+      })
+      // Remove from Cart
+      .addCase(removeFromCart.fulfilled, (state, action) => {
+        state.items = action.payload;
+      })
+      // Clear Cart
+      .addCase(clearCart.fulfilled, (state, action) => {
+        state.items = action.payload;
+      });
   },
 });
 
-export const { addToCart, updateQuantity, removeFromCart, clearCart } =
-  cartSlice.actions;
-
-const persistConfig = {
-  key: "root",
-  storage,
-};
-
-const persistedReducer = persistReducer(persistConfig, cartSlice.reducer);
-
-export default persistedReducer;
+export default cartSlice.reducer;
