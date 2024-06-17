@@ -6,6 +6,7 @@ const apiURL = import.meta.env.VITE_APP_API_URL;
 
 const initialState = {
   data: [],
+  tags: [],
   product: null,
   status: StatusCode.IDLE,
   error: null,
@@ -16,6 +17,13 @@ const fetchCoffeeData = async () => {
   const response = await axios.get(`${apiURL}/products`);
   return response.data;
 };
+
+// Fetch product tags from the API
+const fetchTags = async () => {
+  const response = await axios.get(`${apiURL}/products/tags`);
+  return response.data;
+};
+
 
 // Fetch coffee data by ID from the API
 const fetchCoffeeById = async (id) => {
@@ -29,11 +37,16 @@ const toggleFavouriteOnApi = async (id, favourite) => {
     id,
     favourite,
   });
-  return response.data; // Assuming API returns updated product or success message
+  return response.data; 
 };
 
 export const getProducts = createAsyncThunk("product/loadData", async () => {
   const response = await fetchCoffeeData();
+  return response;
+});
+
+export const getProductsTags = createAsyncThunk("product/loadTags", async () => {
+  const response = await fetchTags();
   return response;
 });
 
@@ -80,6 +93,19 @@ const productSlice = createSlice({
         state.error = null;
       })
       .addCase(getProducts.rejected, (state) => {
+        state.status = StatusCode.ERROR;
+        state.error = "Failed to fetch data";
+      })
+      .addCase(getProductsTags.pending, (state) => {
+        state.status = StatusCode.LOADING;
+        state.error = null;
+      })
+      .addCase(getProductsTags.fulfilled, (state, action) => {
+        state.tags = action.payload; 
+        state.status = StatusCode.IDLE;
+        state.error = null;
+      })
+      .addCase(getProductsTags.rejected, (state) => {
         state.status = StatusCode.ERROR;
         state.error = "Failed to fetch data";
       })

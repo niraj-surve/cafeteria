@@ -5,15 +5,16 @@ import { getProducts } from "../../store/productSlice";
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { data: products, status } = useSelector((state) => state.product);
+  const { data: products, tags, status } = useSelector((state) => state.product);
 
   useEffect(() => {
+    console.log(tags)
     dispatch(getProducts())
   }, [dispatch]);
 
   return (
     <>
-      <ProductCards products={products} status={status} />
+      <ProductCards products={products} tags={tags} status={status} />
     </>
   );
 };

@@ -1,8 +1,13 @@
-import { coffeeData } from "../data/data.js";
+import { coffeeData, tags } from "../data/data.js";
 
 // Get all products
 export const getProducts = (req, res) => {
   res.send(coffeeData);
+};
+
+// Get all products tags
+export const getProductsTags = (req, res) => {
+  res.send(tags);
 };
 
 // Get a product by id

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { keyframes } from "@emotion/react";
 import Rating from "react-rating";
 import { FaStar, FaHeart, FaRegHeart, FaSearch } from "react-icons/fa";
@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../store/cartSlice";
-import { toggleFavourite } from "../../store/productSlice"; // Import toggleFavourite action
+import { toggleFavourite, getProductsTags } from "../../store/productSlice"; // Import toggleFavourite action and getProductsTags action
 import toast from "react-hot-toast";
 
 const fadeInRight = keyframes`
@@ -24,9 +24,14 @@ const ProductCards = ({ products, status }) => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const cartStatus = useSelector((state) => state.cart.status);
+  const tags = useSelector((state) => state.product.tags); // Get tags from Redux state
 
   const [selectedTag, setSelectedTag] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    dispatch(getProductsTags()); // Fetch tags when the component mounts
+  }, [dispatch]);
 
   const handleAddToCart = (product) => {
     dispatch(
@@ -60,15 +65,6 @@ const ProductCards = ({ products, status }) => {
           duration: 3000,
         });
   };
-
-  const tags = [
-    { display: "ALL", value: "all" },
-    { display: "STRONG", value: "strong" },
-    { display: "MILKY", value: "milky" },
-    { display: "SWEET", value: "sweet" },
-    { display: "BLACK", value: "black" },
-    { display: "LIGHT", value: "light" },
-  ];
 
   const filteredProducts = products.filter((product) => {
     const matchesTag =
@@ -165,7 +161,8 @@ const ProductCards = ({ products, status }) => {
                         <h3 className="text-dark font-bold text-lg">{name}</h3>
                       </Link>
                       <span className="text-xs border border-primary text-muted px-2 py-1 rounded-full shadow-4xl">
-                        {tags[0]}
+                        {tags[0]}{" "}
+                        {/* Adjust this based on your tags structure */}
                       </span>
                     </div>
                     <div className="flex flex-col gap-2 justify-between w-full text-sm">
