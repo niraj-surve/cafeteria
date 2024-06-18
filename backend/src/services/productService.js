@@ -92,22 +92,3 @@ export const deleteProduct = async (req, res) => {
       .send({ message: "Failed to delete product", error: error.message });
   }
 };
-
-// Toggle favorite status for a product
-export const toggleFavourite = async (req, res) => {
-  const { id, favourite } = req.body;
-  try {
-    const existingProduct = await Product.findById(id);
-    if (!existingProduct) {
-      return res.status(404).send({ message: "Product not found" });
-    }
-
-    existingProduct.favourite = favourite;
-    await existingProduct.save();
-    res.status(200).send(existingProduct);
-  } catch (error) {
-    res
-      .status(500)
-      .send({ message: "Failed to update product", error: error.message });
-  }
-};

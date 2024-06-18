@@ -8,13 +8,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../store/cartSlice";
-import {
-  getProducts,
-  toggleFavourite,
-  getProductsTags,
-} from "../../store/productSlice";
+import { getProducts, getProductsTags } from "../../store/productSlice";
 import toast from "react-hot-toast";
-import { selectUser, selectUserStatus } from "../../store/userSlice";
+import { selectUser, selectUserStatus, toggleFavorite } from "../../store/userSlice";
 
 const fadeInRight = keyframes`
   from {
@@ -26,7 +22,6 @@ const fadeInRight = keyframes`
 `;
 
 const ProductCards = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { data: products, status } = useSelector((state) => state.product);
   const cartItems = useSelector((state) => state.cart.items);
@@ -65,29 +60,15 @@ const ProductCards = () => {
     });
   };
 
-  const handleToggleFavourite = (product) => {
+  const handleToggleFavourite = (productId) => {
     if (!user) {
-      toast.error("Please log in to add to favourites!", {
+      toast.error("Please log in to add to favorites!", {
         position: "bottom-right",
         duration: 3000,
       });
       return;
     }
-
-    const newFavouriteStatus = !product.favourite;
-    dispatch(
-      toggleFavourite({ id: product._id, favourite: newFavouriteStatus })
-    );
-
-    newFavouriteStatus
-      ? toast.success(`${product.name} added to favourites!`, {
-          position: "bottom-right",
-          duration: 3000,
-        })
-      : toast.error(`${product.name} removed from favourites!`, {
-          position: "bottom-right",
-          duration: 3000,
-        });
+    dispatch(toggleFavorite(productId));
   };
 
   const filteredProducts = products.filter((product) => {
@@ -142,8 +123,9 @@ const ProductCards = () => {
       </div>
       <div className="w-3/4 grid max-md:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 place-items-center gap-10">
         {filteredProducts.map((product) => {
-          const { _id, name, price, favourite, stars, image, tags } = product;
+          const { _id, name, price, stars, image, tags } = product;
           const isInCart = cartItems.some((item) => item.id === _id);
+          const isFavourite = user && user.favourites.includes(_id);
 
           return (
             <Reveal key={_id} keyframes={fadeInRight} delay={100} triggerOnce>
@@ -165,9 +147,9 @@ const ProductCards = () => {
                   <div className="w-full flex flex-col gap-2 font-mulish">
                     <button
                       className="absolute"
-                      onClick={() => handleToggleFavourite(product)}
+                      onClick={() => handleToggleFavourite(product._id)}
                     >
-                      {favourite && user ? (
+                      {isFavourite ? (
                         <FaHeart className="text-red-600 text-xl" />
                       ) : (
                         <FaRegHeart className="text-dark text-xl" />

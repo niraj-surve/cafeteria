@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getProductById, toggleFavourite } from "../../store/productSlice";
+import { getProductById } from "../../store/productSlice";
 import StatusCode from "../../util/StatusCode";
 import Rating from "react-rating";
 import { FaHeart, FaRegHeart, FaStar } from "react-icons/fa";
@@ -9,12 +9,13 @@ import { MdOutlineShoppingCart } from "react-icons/md";
 import { addToCart } from "../../store/cartSlice";
 import toast from "react-hot-toast";
 import NotFound from "../NotFound/NotFound";
+import { toggleFavorite } from "../../store/userSlice";
 
 const Product = () => {
   const dispatch = useDispatch();
-  const { product, status, error } = useSelector((state) => state.product);
+  const { product, status } = useSelector((state) => state.product);
+  const { user } = useSelector((state) => state.user);
   const cartItems = useSelector((state) => state.cart.items);
-  const cartStatus = useSelector((state) => state.cart.status);
   const { id } = useParams();
 
   useEffect(() => {
@@ -25,6 +26,14 @@ const Product = () => {
 
   const handleAddToCart = () => {
     if (!product) return; // Ensure product exists before adding to cart
+
+    if (!user) {
+      toast.error("Please log in to add to cart!", {
+        position: "bottom-right",
+        duration: 3000,
+      });
+      return;
+    }
 
     dispatch(
       addToCart({
@@ -42,22 +51,14 @@ const Product = () => {
   };
 
   const handleToggleFavourite = () => {
-    if (!product) return; // Ensure product exists before toggling favourite
-
-    const newFavouriteStatus = !product.favourite;
-    dispatch(
-      toggleFavourite({ id: product._id, favourite: newFavouriteStatus })
-    );
-
-    newFavouriteStatus
-      ? toast.success(`${product.name} added to favourites!`, {
-          position: "bottom-right",
-          duration: 3000,
-        })
-      : toast.error(`${product.name} removed from favourites!`, {
-          position: "bottom-right",
-          duration: 3000,
-        });
+    if (!user) {
+      toast.error("Please log in to add to favorites!", {
+        position: "bottom-right",
+        duration: 3000,
+      });
+      return;
+    }
+    dispatch(toggleFavorite(product._id)); // Dispatch action with product ID
   };
 
   if (status === StatusCode.LOADING) {
@@ -77,6 +78,7 @@ const Product = () => {
   }
 
   const isInCart = cartItems.some((item) => item.id === product._id);
+  const isFavourite = user && user.favourites.includes(product._id);
 
   return (
     <div className="max-w-4xl mx-auto p-8">
@@ -92,7 +94,7 @@ const Product = () => {
               {product?.name}
             </h1>
             <button onClick={handleToggleFavourite}>
-              {product?.favourite === true ? (
+              {isFavourite === true ? (
                 <FaHeart className="text-red-600 text-xl" />
               ) : (
                 <FaRegHeart className="text-dark text-xl" />

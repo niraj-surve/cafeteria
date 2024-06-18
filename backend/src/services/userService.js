@@ -3,7 +3,7 @@ import User from "../models/user.js";
 import bcrypt from "bcrypt";
 
 export const register = async (req, res) => {
-  const { name, email, password, address, isAdmin } = req.body;
+  const { name, email, password, address, isAdmin, favourites } = req.body; // Include favourites in the destructuring
 
   try {
     const existingUser = await User.findOne({ email });
@@ -22,15 +22,17 @@ export const register = async (req, res) => {
       password: hashedPassword,
       address,
       isAdmin,
+      favourites: favourites || [], // Set favourites explicitly here
     });
 
     const savedUser = await user.save();
 
-    res.status(201).send({message: "User registered successfully!"});
+    res.status(201).send({ message: "User registered successfully!" });
   } catch (error) {
     res.status(500).send({ message: "Error registering new user." });
   }
 };
+
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
@@ -46,6 +48,36 @@ export const login = async (req, res) => {
     res.status(400).send({ message: "Username or password is invalid!" });
   } catch (error) {
     res.status(500).send({ error: "Error logging in." });
+  }
+};
+
+export const toggleFavorite = async (req, res) => {
+  const { productId } = req.params;
+  const userId = req.user.id;
+
+  try {
+    let user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const index = user.favourites.indexOf(productId);
+
+    if (index === -1) {
+      // Product not in favorites, add it
+      user.favourites.push(productId);
+    } else {
+      // Product already in favorites, remove it
+      user.favourites.splice(index, 1);
+    }
+
+    await user.save();
+
+    res.status(200).json({ favourites: user.favourites });
+  } catch (error) {
+    console.error("Error toggling favorite:", error);
+    res.status(500).json({ message: "Error toggling favorite" });
   }
 };
 

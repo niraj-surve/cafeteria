@@ -30,15 +30,6 @@ const fetchProductById = async (id) => {
   return response.data;
 };
 
-// Toggle favourite status on the API
-const toggleFavouriteOnApi = async (id, favourite) => {
-  const response = await axios.post(`${apiURL}/products/product/favourite`, {
-    id,
-    favourite,
-  });
-  return response.data;
-};
-
 export const getProducts = createAsyncThunk("product/loadData", async () => {
   const response = await fetchProductData();
   return response;
@@ -61,18 +52,6 @@ export const getProductById = createAsyncThunk(
         throw new Error("Product not found");
       }
       return product;
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
-export const toggleFavourite = createAsyncThunk(
-  "product/toggleFavourite",
-  async ({ id, favourite }, { rejectWithValue }) => {
-    try {
-      const updatedProduct = await toggleFavouriteOnApi(id, favourite);
-      return updatedProduct;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -121,27 +100,6 @@ const productSlice = createSlice({
         state.error = null;
       })
       .addCase(getProductById.rejected, (state, action) => {
-        state.status = StatusCode.ERROR;
-        state.error = action.payload;
-      })
-      .addCase(toggleFavourite.pending, (state) => {
-        state.status = StatusCode.LOADING;
-        state.error = null;
-      })
-      .addCase(toggleFavourite.fulfilled, (state, action) => {
-        // Update the product in the state with the updated one
-        if (state.product && state.product._id === action.payload._id) {
-          state.product = action.payload;
-        }
-        // Update data array if necessary
-        const index = state.data.findIndex((p) => p._id === action.payload._id);
-        if (index !== -1) {
-          state.data[index] = action.payload;
-        }
-        state.status = StatusCode.IDLE;
-        state.error = null;
-      })
-      .addCase(toggleFavourite.rejected, (state, action) => {
         state.status = StatusCode.ERROR;
         state.error = action.payload;
       });

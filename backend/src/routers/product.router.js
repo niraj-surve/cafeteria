@@ -5,7 +5,6 @@ import {
   getProductById,
   getProducts,  
   getProductsTags,  
-  toggleFavourite,
   updateProduct,
 } from "../services/productService.js";
 import { authenticateAdmin } from "../services/userService.js";
@@ -29,8 +28,5 @@ router.patch("/product/update/:id", authenticateAdmin, updateProduct);
 
 // Route to delete an existing product
 router.delete("/product/delete/:id", authenticateAdmin, deleteProduct);
-
-// Route to toggle favorite status
-router.post("/product/favourite", authenticateAdmin, toggleFavourite);
 
 export default router;
