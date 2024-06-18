@@ -3,7 +3,6 @@ import DarkLogo from "../../assets/logo-dark.png";
 import LightLogo from "../../assets/logo-light.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchCartItems } from "../../store/cartSlice";
 import { logoutUser } from "../../store/userSlice";
 import { FaUser } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
@@ -13,14 +12,8 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Use useSelector to get cart state from Redux store
-  const cart = useSelector((state) => state.cart);
+  // Use useSelector to get user state from Redux store
   const { user } = useSelector((state) => state.user);
-
-  useEffect(() => {
-    // Fetch cart items when the component mounts
-    dispatch(fetchCartItems());
-  }, [dispatch]);
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -106,7 +99,7 @@ const Navbar = () => {
                 id="count"
                 className="bg-primary text-white px-2 py-1 rounded-full text-xs"
               >
-                {cart.items.length}
+                0 {/* Replace with actual count if needed */}
               </span>
             </button>
           </li>

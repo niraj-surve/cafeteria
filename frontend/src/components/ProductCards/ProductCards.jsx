@@ -4,13 +4,12 @@ import Rating from "react-rating";
 import { FaStar, FaHeart, FaRegHeart, FaSearch } from "react-icons/fa";
 import Reveal from "react-awesome-reveal";
 import StatusCode from "../../util/StatusCode";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { MdOutlineShoppingCart } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../../store/cartSlice";
-import { getProducts, getProductsTags } from "../../store/productSlice";
 import toast from "react-hot-toast";
-import { selectUser, selectUserStatus, toggleFavorite } from "../../store/userSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { getProducts, getProductsTags } from "../../store/productSlice";
+import { selectUser, toggleFavorite } from "../../store/userSlice";
 
 const fadeInRight = keyframes`
   from {
@@ -23,10 +22,11 @@ const fadeInRight = keyframes`
 
 const ProductCards = () => {
   const dispatch = useDispatch();
-  const { data: products, status } = useSelector((state) => state.product);
-  const cartItems = useSelector((state) => state.cart.items);
-  const cartStatus = useSelector((state) => state.cart.status);
-  const tags = useSelector((state) => state.product.tags);
+  const {
+    data: products,
+    status,
+    tags,
+  } = useSelector((state) => state.product);
   const user = useSelector(selectUser);
 
   const [selectedTag, setSelectedTag] = useState("all");
@@ -36,29 +36,6 @@ const ProductCards = () => {
     dispatch(getProducts());
     dispatch(getProductsTags());
   }, [dispatch]);
-
-  const handleAddToCart = (product) => {
-    if (!user) {
-      toast.error("Please log in to add to cart!", {
-        position: "bottom-right",
-        duration: 3000,
-      });
-      return;
-    }
-    dispatch(
-      addToCart({
-        id: product._id,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-      })
-    );
-
-    toast.success(`${product.name} added to cart!`, {
-      position: "bottom-right",
-      duration: 3000,
-    });
-  };
 
   const handleToggleFavourite = (productId) => {
     if (!user) {
@@ -82,7 +59,7 @@ const ProductCards = () => {
     return matchesTag && matchesSearch;
   });
 
-  if (status === StatusCode.LOADING || cartStatus === "loading") {
+  if (status === StatusCode.LOADING) {
     return <div>Loading...</div>;
   }
 
@@ -124,7 +101,6 @@ const ProductCards = () => {
       <div className="w-3/4 grid max-md:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 place-items-center gap-10">
         {filteredProducts.map((product) => {
           const { _id, name, price, stars, image, tags } = product;
-          const isInCart = cartItems.some((item) => item.id === _id);
           const isFavourite = user && user.favourites.includes(_id);
 
           return (
@@ -174,19 +150,14 @@ const ProductCards = () => {
                       <span>Price: ₹{price}</span>
                     </div>
                     <button
-                      className={`mt-2 flex items-center ${
-                        isInCart ? "bg-success" : "bg-primary"
-                      } rounded-full font-opensans w-fit self-center hover:scale-[1.02] hover:duration-[300ms]`}
+                      className="mt-2 flex items-center bg-primary rounded-full font-opensans w-fit self-center hover:scale-[1.02] hover:duration-[300ms]"
                       onClick={() => handleAddToCart(product)}
-                      disabled={isInCart}
                     >
-                      {!isInCart && (
-                        <span className="bg-white relative left-[6px] rounded-full p-1">
-                          <MdOutlineShoppingCart className="text-primary rounded-full" />
-                        </span>
-                      )}
+                      <span className="bg-white relative left-[6px] rounded-full p-1">
+                        <MdOutlineShoppingCart className="text-primary rounded-full" />
+                      </span>
                       <span className="py-2 px-4 text-white rounded-full uppercase text-sm font-bold">
-                        {isInCart ? "In Cart" : "Add to cart"}
+                        Add to cart
                       </span>
                     </button>
                   </div>

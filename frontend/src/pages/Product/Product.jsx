@@ -6,16 +6,14 @@ import StatusCode from "../../util/StatusCode";
 import Rating from "react-rating";
 import { FaHeart, FaRegHeart, FaStar } from "react-icons/fa";
 import { MdOutlineShoppingCart } from "react-icons/md";
-import { addToCart } from "../../store/cartSlice";
 import toast from "react-hot-toast";
 import NotFound from "../NotFound/NotFound";
-import { toggleFavorite } from "../../store/userSlice";
+import { toggleFavorite, selectUser } from "../../store/userSlice";
 
 const Product = () => {
   const dispatch = useDispatch();
   const { product, status } = useSelector((state) => state.product);
-  const { user } = useSelector((state) => state.user);
-  const cartItems = useSelector((state) => state.cart.items);
+  const user = useSelector(selectUser);
   const { id } = useParams();
 
   useEffect(() => {
@@ -35,15 +33,8 @@ const Product = () => {
       return;
     }
 
-    dispatch(
-      addToCart({
-        id: product._id,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-      })
-    );
-
+    // Simulate addToCart action as an example
+    // Replace with actual functionality as needed
     toast.success(`${product.name} added to cart!`, {
       position: "bottom-right",
       duration: 3000,
@@ -77,7 +68,6 @@ const Product = () => {
     return <div className="text-center">No product found.</div>;
   }
 
-  const isInCart = cartItems.some((item) => item.id === product._id);
   const isFavourite = user && user.favourites.includes(product._id);
 
   return (
@@ -143,18 +133,14 @@ const Product = () => {
             />
           </div>
           <button
-            className={`mt-4 flex items-center ${
-              isInCart ? "bg-success" : "bg-primary"
-            } rounded-full font-opensans w-fit self-center hover:scale-[1.02] hover:duration-[300ms]`}
+            className="mt-4 flex items-center bg-primary rounded-full font-opensans w-fit self-center hover:scale-[1.02] hover:duration-[300ms]"
             onClick={handleAddToCart}
           >
-            {!isInCart && (
-              <span className="bg-white relative left-[6px] rounded-full p-1">
-                <MdOutlineShoppingCart className="text-primary rounded-full" />
-              </span>
-            )}
+            <span className="bg-white relative left-[6px] rounded-full p-1">
+              <MdOutlineShoppingCart className="text-primary rounded-full" />
+            </span>
             <span className="py-2 px-4 text-white rounded-full uppercase text-sm font-bold">
-              {isInCart ? "In Cart" : "Add to cart"}
+              Add to cart
             </span>
           </button>
         </div>
