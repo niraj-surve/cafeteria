@@ -1,7 +1,7 @@
 import User from "../models/user.js";
 
 export const getCartItems = async (req, res) => {
-  const { userId } = req.body;
+  const { userId } = req.query;
 
   try {
     const user = await User.findById(userId);

@@ -7,6 +7,7 @@ import { logoutUser } from "../../store/userSlice";
 import { FaUser } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import toast from "react-hot-toast";
+import { getCartItems } from "../../store/cartSlice";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -14,6 +15,11 @@ const Navbar = () => {
 
   // Use useSelector to get user state from Redux store
   const { user } = useSelector((state) => state.user);
+  const { cartItems } = useSelector((state) => state.cart);
+
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const userId = storedUser ? storedUser.id : null;
+  const token = storedUser ? storedUser.token : null;
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -30,6 +36,12 @@ const Navbar = () => {
       navigate("/login?returnurl=/cart");
     }
   };
+
+  useEffect(() => {
+    if (userId && token) {
+      dispatch(getCartItems({ userId, token }));
+    }
+  }, [dispatch, userId, token]);
 
   return (
     <div className="w-full z-10 max-md:px-8 md:px-14 flex items-center justify-between h-[64px] bg-white dark:bg-dark">
@@ -99,7 +111,7 @@ const Navbar = () => {
                 id="count"
                 className="bg-primary text-white px-2 py-1 rounded-full text-xs"
               >
-                0 {/* Replace with actual count if needed */}
+                {cartItems.length}
               </span>
             </button>
           </li>

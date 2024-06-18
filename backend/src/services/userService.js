@@ -33,7 +33,6 @@ export const register = async (req, res) => {
   }
 };
 
-
 export const login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -101,6 +100,7 @@ export const generateTokenResponse = (user) => {
     address: user.address,
     isAdmin: user.isAdmin,
     favourites: user.favourites,
+    cart: user.cart,
     token,
   };
 };
