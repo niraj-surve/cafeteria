@@ -1,29 +1,23 @@
-// routes/cart.router.js
-
 import { Router } from "express";
-import {
-  getCartItems,
-  addToCart,
-  updateQuantity,
-  removeFromCart,
-  clearCart,
-} from "../services/cartService.js";
+import { authenticateUser } from "../services/userService.js";
+import { getCartItems, addToCart, removeFromCart, decreaseQuantity, increaseQuantity } from "../services/cartService.js";
 
 const router = Router();
 
-// Route to get all cart items
-router.get("/", getCartItems);
+// Route to get the user's cart
+router.get("/", authenticateUser, getCartItems);
 
-// Route to add an item to the cart
-router.post("/add", addToCart);
+// Route to add a product to the user's cart
+router.post("/add", authenticateUser, addToCart);
 
-// Route to update item quantity in the cart
-router.put("/update", updateQuantity);
+// Route to remove a product from the user's cart
+router.delete("/remove/:productId", authenticateUser, removeFromCart);
 
-// Route to remove an item from the cart
-router.delete("/remove", removeFromCart);
+// Route to increase quantity of a product in the user's cart by 1
+router.patch("/increase/:productId", authenticateUser, increaseQuantity);
 
-// Route to clear the cart
-router.delete("/clear", clearCart);
+// Route to decrease quantity of a product in the user's cart by 1
+router.patch("/decrease/:productId", authenticateUser, decreaseQuantity);
+
 
 export default router;
