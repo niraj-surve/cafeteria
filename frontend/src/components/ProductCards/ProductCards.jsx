@@ -8,7 +8,11 @@ import { Link } from "react-router-dom";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../store/cartSlice";
-import { toggleFavourite, getProductsTags } from "../../store/productSlice"; // Import toggleFavourite action and getProductsTags action
+import {
+  getProducts,
+  toggleFavourite,
+  getProductsTags,
+} from "../../store/productSlice";
 import toast from "react-hot-toast";
 
 const fadeInRight = keyframes`
@@ -20,23 +24,25 @@ const fadeInRight = keyframes`
   }
 `;
 
-const ProductCards = ({ products, status }) => {
+const ProductCards = () => {
   const dispatch = useDispatch();
+  const { data: products, status } = useSelector((state) => state.product);
   const cartItems = useSelector((state) => state.cart.items);
   const cartStatus = useSelector((state) => state.cart.status);
-  const tags = useSelector((state) => state.product.tags); // Get tags from Redux state
+  const tags = useSelector((state) => state.product.tags);
 
   const [selectedTag, setSelectedTag] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    dispatch(getProductsTags()); // Fetch tags when the component mounts
+    dispatch(getProducts());
+    dispatch(getProductsTags());
   }, [dispatch]);
 
   const handleAddToCart = (product) => {
     dispatch(
       addToCart({
-        id: product.id,
+        id: product._id,
         name: product.name,
         price: product.price,
         image: product.image,
@@ -52,7 +58,7 @@ const ProductCards = ({ products, status }) => {
   const handleToggleFavourite = (product) => {
     const newFavouriteStatus = !product.favourite;
     dispatch(
-      toggleFavourite({ id: product.id, favourite: newFavouriteStatus })
+      toggleFavourite({ id: product._id, favourite: newFavouriteStatus })
     );
 
     newFavouriteStatus
@@ -82,7 +88,7 @@ const ProductCards = ({ products, status }) => {
   }
 
   if (status === StatusCode.ERROR) {
-    return <div>Error loading data: {error}</div>;
+    return <div>Error loading data: {status}</div>;
   }
 
   return (
@@ -118,11 +124,11 @@ const ProductCards = ({ products, status }) => {
       </div>
       <div className="w-3/4 grid max-md:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 place-items-center gap-10">
         {filteredProducts.map((product) => {
-          const { id, name, price, favourite, stars, image, tags } = product;
-          const isInCart = cartItems.some((item) => item.id === product.id);
+          const { _id, name, price, favourite, stars, image, tags } = product;
+          const isInCart = cartItems.some((item) => item.id === _id);
 
           return (
-            <Reveal key={id} keyframes={fadeInRight} delay={100} triggerOnce>
+            <Reveal key={_id} keyframes={fadeInRight} delay={100} triggerOnce>
               <div
                 className="max-md:w-[300px] md:w-[280px] h-[440px] max-sm:text-sm bg-white p-8 rounded-lg hover:cursor-pointer"
                 style={{
@@ -131,7 +137,7 @@ const ProductCards = ({ products, status }) => {
                 }}
               >
                 <div className="flex flex-col gap-6 items-center">
-                  <Link to={`/product/${id}`}>
+                  <Link to={`/product/${_id}`}>
                     <img
                       className="rounded-lg"
                       src={`/coffee/${image}`}
@@ -157,12 +163,11 @@ const ProductCards = ({ products, status }) => {
                       readonly
                     />
                     <div className="flex gap-2 justify-between">
-                      <Link to={`/product/${id}`}>
+                      <Link to={`/product/${_id}`}>
                         <h3 className="text-dark font-bold text-lg">{name}</h3>
                       </Link>
                       <span className="text-xs border border-primary text-muted px-2 py-1 rounded-full shadow-4xl">
-                        {tags[0]}{" "}
-                        {/* Adjust this based on your tags structure */}
+                        {tags[0]}
                       </span>
                     </div>
                     <div className="flex flex-col gap-2 justify-between w-full text-sm">

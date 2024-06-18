@@ -28,7 +28,7 @@ const Product = () => {
 
     dispatch(
       addToCart({
-        id: product.id,
+        id: product._id,
         name: product.name,
         price: product.price,
         image: product.image,
@@ -46,7 +46,7 @@ const Product = () => {
 
     const newFavouriteStatus = !product.favourite;
     dispatch(
-      toggleFavourite({ id: product.id, favourite: newFavouriteStatus })
+      toggleFavourite({ id: product._id, favourite: newFavouriteStatus })
     );
 
     newFavouriteStatus
@@ -76,7 +76,7 @@ const Product = () => {
     return <div className="text-center">No product found.</div>;
   }
 
-  const isInCart = cartItems.some((item) => item.id === product.id);
+  const isInCart = cartItems.some((item) => item.id === product._id);
 
   return (
     <div className="max-w-4xl mx-auto p-8">
