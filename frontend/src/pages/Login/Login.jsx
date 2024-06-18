@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash, FaLock, FaUser } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../store/userSlice";
-import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const validateEmail = (email) => {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -29,7 +29,6 @@ const validatePassword = (password) => {
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
   const [searchParams] = useSearchParams();
 
   const { user, status } = useSelector((state) => state.user);
@@ -51,14 +50,13 @@ const Login = () => {
 
   useEffect(() => {
     if (status === "succeeded" && user) {
-      const returnUrl =
-        searchParams.get("returnurl") || location.state?.from?.pathname || "/";
-      navigate(returnUrl);
+      const returnUrl = searchParams.get("returnurl") || "/";
+      navigate(returnUrl); // Navigate to returnUrl after successful login
     }
-  }, [status, user, navigate, searchParams, location.state]);
+  }, [status, user, navigate, searchParams]);
 
   return (
-    <div className="h-[calc(100vh-64px)] flex items-center justify-center">
+    <div className="h-screen flex items-center justify-center">
       <div className="p-8 rounded-lg" style={{ boxShadow: "0 0 5px gray" }}>
         <h1 className="w-full text-center text-3xl font-black font-opensans mb-8 text-dark">
           LOG IN
@@ -119,7 +117,10 @@ const Login = () => {
               </span>
             )}
           </div>
-          <button className="w-full p-2 bg-primary text-white border border-primary hover:text-primary hover:bg-white rounded-lg btn-transition font-extrabold font-opensans">
+          <button
+            type="submit"
+            className="w-full p-2 bg-primary text-white border border-primary hover:text-primary hover:bg-white rounded-lg btn-transition font-extrabold font-opensans"
+          >
             LOGIN
           </button>
         </form>

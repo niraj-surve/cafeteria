@@ -1,15 +1,17 @@
 import React, { useEffect } from "react";
 import DarkLogo from "../../assets/logo-dark.png";
 import LightLogo from "../../assets/logo-light.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchCartItems } from "../../store/cartSlice";
-import { logoutUser } from "../../store/userSlice"; // Import logoutUser action
+import { logoutUser } from "../../store/userSlice";
 import { FaUser } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Use useSelector to get cart state from Redux store
   const cart = useSelector((state) => state.cart);
@@ -22,6 +24,18 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(logoutUser());
+  };
+
+  const handleCartClick = () => {
+    if (user) {
+      navigate("/cart");
+    } else {
+      toast.error("Please login to access cart", {
+        position: "bottom-right",
+        duration: 3000,
+      });
+      navigate("/login?returnurl=/cart");
+    }
   };
 
   return (
@@ -82,19 +96,19 @@ const Navbar = () => {
             </Link>
           )}
 
-          <li className=" w-[100px] text-center">
-            <Link
+          <li className="w-[100px] text-center">
+            <button
               className="p-4 flex items-center gap-1 font-opensans"
-              to="/cart"
+              onClick={handleCartClick}
             >
               Cart{" "}
               <span
                 id="count"
                 className="bg-primary text-white px-2 py-1 rounded-full text-xs"
               >
-                {cart.items.length}{" "}
+                {cart.items.length}
               </span>
-            </Link>
+            </button>
           </li>
         </ul>
       </div>

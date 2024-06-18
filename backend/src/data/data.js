@@ -6,22 +6,3 @@ export const tags = [
   { display: "BLACK", value: "black" },
   { display: "LIGHT", value: "light" },
 ];
-
-export const users = [
-  {
-    id: 1,
-    name: "John Doe",
-    email: "john@gmail.com",
-    password: "john@12345",
-    address: "Toronto",
-    isAdmin: false,
-  },
-  {
-    id: 2,
-    name: "Bob Johnson",
-    email: "bob@hotmail.com",
-    password: "bob@12345",
-    address: "Los Angeles",
-    isAdmin: true,
-  },
-];

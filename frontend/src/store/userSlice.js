@@ -64,11 +64,6 @@ export const toggleFavorite = createAsyncThunk(
   }
 );
 
-
-// Selector to get user login status
-export const selectUser = (state) => state.user.user;
-export const selectUserStatus = (state) => state.user.status;
-
 const initialState = {
   user: null,
   status: "idle",
@@ -170,5 +165,9 @@ const userSlice = createSlice({
 });
 
 export const { setUser, logoutUser } = userSlice.actions;
+
+// Selector to get user login status
+export const selectUser = (state) => state.user.user;
+export const selectUserStatus = (state) => state.user.status;
 
 export default userSlice.reducer;
