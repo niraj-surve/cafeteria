@@ -8,6 +8,7 @@ import {
   toggleFavourite,
   updateProduct,
 } from "../services/productService.js";
+import { authenticateAdmin } from "../services/userService.js";
 
 const router = Router();
 
@@ -21,15 +22,15 @@ router.get("/tags", getProductsTags);
 router.get("/product/:id", getProductById);
 
 // Route to add a new product
-router.post("/product/add", addProduct);
+router.post("/product/add", authenticateAdmin, addProduct);
 
 // Route to update an existing product
-router.patch("/product/update/:id", updateProduct);
+router.patch("/product/update/:id", authenticateAdmin, updateProduct);
 
 // Route to delete an existing product
-router.delete("/product/delete/:id", deleteProduct);
+router.delete("/product/delete/:id", authenticateAdmin, deleteProduct);
 
 // Route to toggle favorite status
-router.post("/product/favourite", toggleFavourite);
+router.post("/product/favourite", authenticateAdmin, toggleFavourite);
 
 export default router;

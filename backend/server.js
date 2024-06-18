@@ -21,13 +21,12 @@ app.use(
 
 // MongoDB connection setup
 const MONGO_URI = process.env.MONGO_URI;
-mongoose.connect(MONGO_URI);
-
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "MongoDB connection error:"));
-db.once("open", () => {
-  console.log("Connected to MongoDB");
-});
+mongoose
+  .connect(MONGO_URI)
+  .then(() => {
+    console.log("MongoDB connected");
+  })
+  .catch((err) => console.error("MongoDB connection error:", err));
 
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/cart", cartRouter);
