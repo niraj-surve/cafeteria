@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import { useSelector, useDispatch } from "react-redux";
 import { getProducts, getProductsTags } from "../../store/productSlice";
 import { selectUser, toggleFavorite } from "../../store/userSlice";
+import { addToCart } from "../../store/cartSlice";
 
 const fadeInRight = keyframes`
   from {
@@ -22,11 +23,7 @@ const fadeInRight = keyframes`
 
 const ProductCards = () => {
   const dispatch = useDispatch();
-  const {
-    data: products,
-    status,
-    tags,
-  } = useSelector((state) => state.product);
+  const { data: products, status, tags } = useSelector((state) => state.product);
   const user = useSelector(selectUser);
 
   const [selectedTag, setSelectedTag] = useState("all");
@@ -46,6 +43,17 @@ const ProductCards = () => {
       return;
     }
     dispatch(toggleFavorite(productId));
+  };
+
+  const handleAddToCart = (userId, _id, name, price, image, token) => {
+    if (!user) {
+      toast.error("Please log in to add to cart!", {
+        position: "bottom-right",
+        duration: 3000,
+      });
+      return;
+    }
+    dispatch(addToCart({ userId, _id, name, price, image, token }));
   };
 
   const filteredProducts = products.filter((product) => {
@@ -151,7 +159,9 @@ const ProductCards = () => {
                     </div>
                     <button
                       className="mt-2 flex items-center bg-primary rounded-full font-opensans w-fit self-center hover:scale-[1.02] hover:duration-[300ms]"
-                      onClick={() => handleAddToCart(product)}
+                      onClick={() =>
+                        handleAddToCart(user.id, _id, name, price, image, user.token)
+                      }
                     >
                       <span className="bg-white relative left-[6px] rounded-full p-1">
                         <MdOutlineShoppingCart className="text-primary rounded-full" />
