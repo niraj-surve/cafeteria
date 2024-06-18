@@ -1,4 +1,7 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+} from "@reduxjs/toolkit";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -15,7 +18,7 @@ export const loginUser = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
-      throw Error(error.response.data.message || "Login failed"); // Assuming error response contains meaningful message
+      throw Error(error.response.data.message || "Login failed");
     }
   }
 );
@@ -24,7 +27,6 @@ export const loginUser = createAsyncThunk(
 export const checkLoginStatus = createAsyncThunk(
   "user/checkLoginStatus",
   async () => {
-    // Simulate checking login status from localStorage or backend API
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
       return user;
@@ -34,14 +36,16 @@ export const checkLoginStatus = createAsyncThunk(
   }
 );
 
-// Initial state - check localStorage for user data
+// Selector to get user login status
+export const selectUser = (state) => state.user.user;
+export const selectUserStatus = (state) => state.user.status;
+
 const initialState = {
   user: null,
-  status: "idle", // For loading status
-  error: null, // For error handling
+  status: "idle",
+  error: null,
 };
 
-// Slice
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -60,7 +64,6 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Login user
       .addCase(loginUser.pending, (state) => {
         state.status = "loading";
       })
@@ -81,7 +84,6 @@ const userSlice = createSlice({
           duration: 3000,
         });
       })
-      // Check login status
       .addCase(checkLoginStatus.pending, (state) => {
         state.status = "loading";
       })
@@ -96,8 +98,6 @@ const userSlice = createSlice({
   },
 });
 
-// Export actions
 export const { setUser, logoutUser } = userSlice.actions;
 
-// Export reducer
 export default userSlice.reducer;

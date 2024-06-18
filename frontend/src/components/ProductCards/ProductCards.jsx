@@ -4,7 +4,7 @@ import Rating from "react-rating";
 import { FaStar, FaHeart, FaRegHeart, FaSearch } from "react-icons/fa";
 import Reveal from "react-awesome-reveal";
 import StatusCode from "../../util/StatusCode";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../store/cartSlice";
@@ -14,6 +14,7 @@ import {
   getProductsTags,
 } from "../../store/productSlice";
 import toast from "react-hot-toast";
+import { selectUser, selectUserStatus } from "../../store/userSlice";
 
 const fadeInRight = keyframes`
   from {
@@ -25,11 +26,13 @@ const fadeInRight = keyframes`
 `;
 
 const ProductCards = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { data: products, status } = useSelector((state) => state.product);
   const cartItems = useSelector((state) => state.cart.items);
   const cartStatus = useSelector((state) => state.cart.status);
   const tags = useSelector((state) => state.product.tags);
+  const user = useSelector(selectUser);
 
   const [selectedTag, setSelectedTag] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -40,6 +43,13 @@ const ProductCards = () => {
   }, [dispatch]);
 
   const handleAddToCart = (product) => {
+    if (!user) {
+      toast.error("Please log in to add to cart!", {
+        position: "bottom-right",
+        duration: 3000,
+      });
+      return;
+    }
     dispatch(
       addToCart({
         id: product._id,
@@ -56,6 +66,14 @@ const ProductCards = () => {
   };
 
   const handleToggleFavourite = (product) => {
+    if (!user) {
+      toast.error("Please log in to add to favourites!", {
+        position: "bottom-right",
+        duration: 3000,
+      });
+      return;
+    }
+
     const newFavouriteStatus = !product.favourite;
     dispatch(
       toggleFavourite({ id: product._id, favourite: newFavouriteStatus })
@@ -149,7 +167,7 @@ const ProductCards = () => {
                       className="absolute"
                       onClick={() => handleToggleFavourite(product)}
                     >
-                      {favourite ? (
+                      {favourite && user ? (
                         <FaHeart className="text-red-600 text-xl" />
                       ) : (
                         <FaRegHeart className="text-dark text-xl" />
