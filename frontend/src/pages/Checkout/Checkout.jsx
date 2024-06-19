@@ -121,7 +121,7 @@ const Checkout = () => {
           <h1 className="ml-2 mb-2 text-sm font-bold">Payment Options</h1>
           <div className="flex gap-4 items-center text-sm">
             <div
-              className={`flex items-center border p-2 rounded-lg cursor-pointer ${
+              className={`flex items-center border rounded-lg cursor-pointer ${
                 paymentMethod === "cash"
                   ? "bg-primary text-white btn-transition"
                   : "bg-slate-100"
@@ -135,12 +135,12 @@ const Checkout = () => {
                 onChange={handlePaymentChange}
                 className="hidden"
               />
-              <label htmlFor="cashPayment" className="cursor-pointer">
+              <label htmlFor="cashPayment" className="cursor-pointer p-2">
                 Cash on Delivery (COD)
               </label>
             </div>
             <div
-              className={`flex items-center border p-2 rounded-lg cursor-pointer ${
+              className={`flex items-center border rounded-lg cursor-pointer ${
                 paymentMethod === "other"
                   ? "bg-primary text-white btn-transition"
                   : "bg-slate-100"
@@ -154,7 +154,7 @@ const Checkout = () => {
                 onChange={handlePaymentChange}
                 className="hidden"
               />
-              <label htmlFor="otherPayment" className="cursor-pointer">
+              <label htmlFor="otherPayment" className="cursor-pointer p-2">
                 UPI or Card
               </label>
             </div>
