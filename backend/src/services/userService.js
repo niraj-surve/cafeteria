@@ -3,33 +3,49 @@ import User from "../models/user.js";
 import bcrypt from "bcrypt";
 
 export const register = async (req, res) => {
-  const { name, email, password, address, isAdmin, favourites } = req.body; // Include favourites in the destructuring
-
+  const { name, email, phone, password, address, isAdmin, favourites } =
+    req.body;
+    
   try {
-    const existingUser = await User.findOne({ email });
-
-    if (existingUser) {
+    // Check if user with the same email exists
+    const existingEmailUser = await User.findOne({ email });
+    if (existingEmailUser) {
       return res
         .status(400)
-        .send({ message: "User with this email already exists." });
+        .json({ message: "User with this email already exists." });
     }
 
+    // Check if user with the same phone number exists
+    const existingPhoneUser = await User.findOne({ phone });
+    if (existingPhoneUser) {
+      return res
+        .status(400)
+        .json({ message: "User with this phone number already exists." });
+    }
+
+    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = new User({
+    // Create new user object
+    const newUser = new User({
       name,
       email,
+      phone,
       password: hashedPassword,
       address,
       isAdmin,
-      favourites: favourites || [], // Set favourites explicitly here
+      favourites: favourites || [],
     });
 
-    const savedUser = await user.save();
+    // Save the user to the database
+    await newUser.save();
 
-    res.status(201).send({ message: "User registered successfully!" });
+    // Send success response
+    res.status(201).json({ message: "User registered successfully!" });
   } catch (error) {
-    res.status(500).send({ message: "Error registering new user." });
+    // Handle errors
+    console.error("Error registering new user:", error);
+    res.status(500).json({ message: "Error registering new user." });
   }
 };
 
@@ -97,10 +113,10 @@ export const generateTokenResponse = (user) => {
     id: user._id,
     email: user.email,
     name: user.name,
+    phone: user.phone,
     address: user.address,
     isAdmin: user.isAdmin,
     favourites: user.favourites,
-    cart: user.cart,
     token,
   };
 };

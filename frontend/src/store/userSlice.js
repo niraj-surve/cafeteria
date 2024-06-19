@@ -20,6 +20,18 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const registerUser = createAsyncThunk(
+  "user/registerUser",
+  async (userData) => {
+    try {
+      const response = await axios.post(`${apiURL}/user/register`, userData);
+      return response.data;
+    } catch (error) {
+      throw Error(error.response.data.message || "Registration failed");
+    }
+  }
+);
+
 // Async thunk for checking login status
 export const checkLoginStatus = createAsyncThunk(
   "user/checkLoginStatus",
@@ -104,6 +116,24 @@ const userSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
         toast.error("Invalid Credentials!", {
+          position: "bottom-right",
+          duration: 3000,
+        });
+      })
+      .addCase(registerUser.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        toast.success("Registration Successful!", {
+          position: "bottom-right",
+          duration: 3000,
+        });
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+        toast.error(action.error.message || "Failed to register the user", {
           position: "bottom-right",
           duration: 3000,
         });

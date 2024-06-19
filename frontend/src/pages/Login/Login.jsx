@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash, FaLock, FaUser } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../store/userSlice";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 const validateEmail = (email) => {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -37,6 +37,7 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -46,6 +47,7 @@ const Login = () => {
 
   const onSubmit = (data) => {
     dispatch(loginUser(data));
+    reset();
   };
 
   useEffect(() => {
@@ -56,7 +58,7 @@ const Login = () => {
   }, [status, user, navigate, searchParams]);
 
   return (
-    <div className="h-screen flex items-center justify-center">
+    <div className="h-[calc(100vh-64px)] flex items-center justify-center">
       <div className="p-8 rounded-lg" style={{ boxShadow: "0 0 5px gray" }}>
         <h1 className="w-full text-center text-3xl font-black font-opensans mb-8 text-dark">
           LOG IN
@@ -124,6 +126,7 @@ const Login = () => {
             LOGIN
           </button>
         </form>
+        <span className="block text-sm text-center w-full mt-8 text-primary">Don't have any account? <Link to={"/register"} className="hover:text-dark">Register Now</Link></span>
       </div>
     </div>
   );

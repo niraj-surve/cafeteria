@@ -7,6 +7,7 @@ import Cart from "./components/Cart/Cart";
 import NotFound from "./pages/NotFound/NotFound";
 import Login from "./pages/Login/Login";
 import { checkLoginStatus } from "./store/userSlice";
+import Register from "./pages/Register/Register";
 
 const AppRoutes = () => {
   const dispatch = useDispatch();
@@ -31,6 +32,11 @@ const AppRoutes = () => {
         <Route path="/login" element={<Login />} />
       ) : (
         <Route path="/login" element={<Navigate to="/" replace />} />
+      )}
+      {!user ? (
+        <Route path="/register" element={<Register />} />
+      ) : (
+        <Route path="/register" element={<Navigate to="/" replace />} />
       )}
       <Route path="/*" element={<NotFound />} />
     </Routes>
