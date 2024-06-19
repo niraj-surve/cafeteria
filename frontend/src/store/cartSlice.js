@@ -12,6 +12,7 @@ const initialState = {
   error: null,
 };
 
+// Fetch Cart Data Function
 const fetchCartData = async (userId, token) => {
   try {
     const response = await axios.get(`${apiURL}/cart?userId=${userId}`, {
@@ -25,6 +26,7 @@ const fetchCartData = async (userId, token) => {
   }
 };
 
+// Existing Async Thunks
 export const getCartItems = createAsyncThunk(
   "cart/loadCart",
   async ({ userId, token }, { rejectWithValue }) => {
@@ -74,6 +76,47 @@ export const removeFromCart = createAsyncThunk(
         },
         data: { userId },
       });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// New Async Thunks
+export const incrementQuantity = createAsyncThunk(
+  "cart/incrementQuantity",
+  async ({ userId, itemId, token }, { rejectWithValue }) => {
+    try {
+      const response = await axios.patch(
+        `${apiURL}/cart/increase/${itemId}`,
+        { userId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const decrementQuantity = createAsyncThunk(
+  "cart/decrementQuantity",
+  async ({ userId, itemId, token }, { rejectWithValue }) => {
+    try {
+      const response = await axios.patch(
+        `${apiURL}/cart/decrease/${itemId}`,
+        { userId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       return response.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -142,6 +185,40 @@ const cartSlice = createSlice({
         state.status = StatusCode.ERROR;
         state.error = action.payload;
         toast.error("Failed to remove from cart!", {
+          position: "bottom-right",
+          duration: 3000,
+        });
+      })
+      .addCase(incrementQuantity.pending, (state) => {
+        state.status = StatusCode.LOADING;
+        state.error = null;
+      })
+      .addCase(incrementQuantity.fulfilled, (state, action) => {
+        state.cartItems = action.payload;
+        state.status = StatusCode.IDLE;
+        state.error = null;
+      })
+      .addCase(incrementQuantity.rejected, (state, action) => {
+        state.status = StatusCode.ERROR;
+        state.error = action.payload;
+        toast.error("Failed to increase quantity!", {
+          position: "bottom-right",
+          duration: 3000,
+        });
+      })
+      .addCase(decrementQuantity.pending, (state) => {
+        state.status = StatusCode.LOADING;
+        state.error = null;
+      })
+      .addCase(decrementQuantity.fulfilled, (state, action) => {
+        state.cartItems = action.payload;
+        state.status = StatusCode.IDLE;
+        state.error = null;
+      })
+      .addCase(decrementQuantity.rejected, (state, action) => {
+        state.status = StatusCode.ERROR;
+        state.error = action.payload;
+        toast.error("Failed to decrease quantity!", {
           position: "bottom-right",
           duration: 3000,
         });

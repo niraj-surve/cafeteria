@@ -24,6 +24,7 @@ const Navbar = () => {
   const handleLogout = () => {
     dispatch(logoutUser());
     dispatch(resetCartState());
+    navigate("/")
   };
 
   const handleCartClick = () => {

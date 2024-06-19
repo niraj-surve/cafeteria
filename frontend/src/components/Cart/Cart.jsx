@@ -2,7 +2,11 @@ import React from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { removeFromCart } from "../../store/cartSlice";
+import {
+  decrementQuantity,
+  incrementQuantity,
+  removeFromCart,
+} from "../../store/cartSlice";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -16,7 +20,7 @@ const Cart = () => {
 
   const handleRemoveItem = (userId, itemId, token) => {
     if (userId && token) {
-      dispatch(removeFromCart({userId, itemId, token}));
+      dispatch(removeFromCart({ userId, itemId, token }));
     }
   };
 
@@ -24,12 +28,16 @@ const Cart = () => {
     // dispatch(clearCart());
   };
 
-  const handleIncrement = (itemId) => {
-    // dispatch(incrementQuantity(itemId));
+  const handleIncrement = (userId, itemId, token) => {
+    if (userId && token) {
+      dispatch(incrementQuantity({ userId, itemId, token }));
+    }
   };
 
-  const handleDecrement = (itemId) => {
-    // dispatch(decrementQuantity(itemId));
+  const handleDecrement = (userId, itemId, token) => {
+    if (userId && token) {
+      dispatch(decrementQuantity({ userId, itemId, token }));
+    }
   };
 
   const totalPrice = cartItems.reduce((total, item) => {
@@ -77,7 +85,9 @@ const Cart = () => {
                     <p className="text-gray-600">Price: ₹ {item.price}</p>
                     <div className="flex gap-2 items-center mt-2">
                       <button
-                        onClick={() => handleDecrement(item.productId)}
+                        onClick={() => item.quantity > 1 ? 
+                          handleDecrement(userId, item.productId, token) : null
+                        }
                         className="bg-white border p-2 rounded-l"
                       >
                         <FaMinus className="text-primary" />
@@ -89,7 +99,9 @@ const Cart = () => {
                         className="border border-gray-300 rounded p-1 text-center w-16 focus:outline-none cursor-default"
                       />
                       <button
-                        onClick={() => handleIncrement(item.productId)}
+                        onClick={() =>
+                          handleIncrement(userId, item.productId, token)
+                        }
                         className="bg-white border p-2 rounded-r"
                       >
                         <FaPlus className="text-primary" />
@@ -98,7 +110,9 @@ const Cart = () => {
                   </div>
                 </div>
                 <button
-                  onClick={() => handleRemoveItem(userId, item.productId, token)}
+                  onClick={() =>
+                    handleRemoveItem(userId, item.productId, token)
+                  }
                   className="text-red-500 font-semibold focus:outline-none"
                 >
                   Remove
