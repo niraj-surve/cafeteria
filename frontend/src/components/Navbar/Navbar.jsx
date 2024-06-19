@@ -8,6 +8,7 @@ import { FaUser } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import toast from "react-hot-toast";
 import { getCartItems, resetCartState } from "../../store/cartSlice";
+import { fetchOrders } from "../../store/orderSlice";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -42,6 +43,7 @@ const Navbar = () => {
   useEffect(() => {
     if (userId && token) {
       dispatch(getCartItems({ userId, token }));
+      dispatch(fetchOrders({userId, token}))
     }
   }, [dispatch, userId, token]);
 

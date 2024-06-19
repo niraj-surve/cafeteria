@@ -76,7 +76,7 @@ export const cancelOrder = async (req, res) => {
 
 export const getOrders = async (req, res) => {
   try {
-    const { userId } = req.body;
+    const { userId } = req.query;
 
     if (!userId) {
       return res

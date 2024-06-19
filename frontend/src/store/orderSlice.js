@@ -52,13 +52,10 @@ export const fetchOrders = createAsyncThunk(
   "order/fetchOrders",
   async ({ userId, token }, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${apiURL}/orders`, {
+      const response = await axios.get(`${apiURL}/orders?userId=${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
-        },
-        params: {
-          userId,
-        },
+        }
       });
       return response.data.orders;
     } catch (error) {
@@ -68,7 +65,7 @@ export const fetchOrders = createAsyncThunk(
 );
 
 const orderSlice = createSlice({
-  name: "order",
+  name: "orders",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
