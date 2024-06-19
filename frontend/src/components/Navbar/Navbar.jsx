@@ -7,7 +7,7 @@ import { logoutUser } from "../../store/userSlice";
 import { FaUser } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import toast from "react-hot-toast";
-import { getCartItems } from "../../store/cartSlice";
+import { getCartItems, resetCartState } from "../../store/cartSlice";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -23,6 +23,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(logoutUser());
+    dispatch(resetCartState());
   };
 
   const handleCartClick = () => {

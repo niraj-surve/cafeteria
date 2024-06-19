@@ -13,6 +13,7 @@ import { toggleFavorite, selectUser } from "../../store/userSlice";
 const Product = () => {
   const dispatch = useDispatch();
   const { product, status } = useSelector((state) => state.product);
+  const { cartItems } = useSelector((state) => state.cart);
   const user = useSelector(selectUser);
   const { id } = useParams();
 
@@ -22,9 +23,7 @@ const Product = () => {
     }
   }, [dispatch, id]);
 
-  const handleAddToCart = () => {
-    if (!product) return; // Ensure product exists before adding to cart
-
+  const handleAddToCart = (userId, _id, name, price, image, token) => {
     if (!user) {
       toast.error("Please log in to add to cart!", {
         position: "bottom-right",
@@ -32,13 +31,11 @@ const Product = () => {
       });
       return;
     }
+    dispatch(addToCart({ userId, _id, name, price, image, token }));
+  };
 
-    // Simulate addToCart action as an example
-    // Replace with actual functionality as needed
-    toast.success(`${product.name} added to cart!`, {
-      position: "bottom-right",
-      duration: 3000,
-    });
+  const isProductInCart = (productId) => {
+    return cartItems.some((item) => item.productId === productId);
   };
 
   const handleToggleFavourite = () => {
@@ -133,14 +130,25 @@ const Product = () => {
             />
           </div>
           <button
-            className="mt-4 flex items-center bg-primary rounded-full font-opensans w-fit self-center hover:scale-[1.02] hover:duration-[300ms]"
-            onClick={handleAddToCart}
+            className={`mt-2 flex items-center rounded-full font-opensans w-fit self-center ${
+              isProductInCart(product._id)
+                ? "bg-success"
+                : "hover:scale-[1.02] hover:duration-[300ms] bg-primary"
+            }`}
+            onClick={() =>
+              handleAddToCart(user.id, product._id, product.name, product.price, product.image, user.token)
+            }
+            disabled={isProductInCart(product._id)}
           >
-            <span className="bg-white relative left-[6px] rounded-full p-1">
-              <MdOutlineShoppingCart className="text-primary rounded-full" />
-            </span>
+            {!isProductInCart(product._id) ? (
+              <span className="bg-white relative left-[6px] rounded-full p-1">
+                <MdOutlineShoppingCart className="text-primary rounded-full" />
+              </span>
+            ) : (
+              ""
+            )}
             <span className="py-2 px-4 text-white rounded-full uppercase text-sm font-bold">
-              Add to cart
+              {isProductInCart(product._id) ? "In Cart" : "Add to Cart"}
             </span>
           </button>
         </div>

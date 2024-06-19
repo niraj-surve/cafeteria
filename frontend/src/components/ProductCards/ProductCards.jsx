@@ -23,8 +23,13 @@ const fadeInRight = keyframes`
 
 const ProductCards = () => {
   const dispatch = useDispatch();
-  const { data: products, status, tags } = useSelector((state) => state.product);
+  const {
+    data: products,
+    status,
+    tags,
+  } = useSelector((state) => state.product);
   const user = useSelector(selectUser);
+  const cartItems = useSelector((state) => state.cart.cartItems);
 
   const [selectedTag, setSelectedTag] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -46,14 +51,11 @@ const ProductCards = () => {
   };
 
   const handleAddToCart = (userId, _id, name, price, image, token) => {
-    if (!user) {
-      toast.error("Please log in to add to cart!", {
-        position: "bottom-right",
-        duration: 3000,
-      });
-      return;
-    }
     dispatch(addToCart({ userId, _id, name, price, image, token }));
+  };
+
+  const isProductInCart = (productId) => {
+    return cartItems.some((item) => item.productId === productId);
   };
 
   const filteredProducts = products.filter((product) => {
@@ -158,16 +160,39 @@ const ProductCards = () => {
                       <span>Price: ₹{price}</span>
                     </div>
                     <button
-                      className="mt-2 flex items-center bg-primary rounded-full font-opensans w-fit self-center hover:scale-[1.02] hover:duration-[300ms]"
-                      onClick={() =>
-                        handleAddToCart(user.id, _id, name, price, image, user.token)
-                      }
+                      className={`mt-2 flex items-center rounded-full font-opensans w-fit self-center ${
+                        isProductInCart(_id)
+                          ? "bg-success"
+                          : "hover:scale-[1.02] hover:duration-[300ms] bg-primary"
+                      }`}
+                      onClick={() => {
+                        if (!user) {
+                          toast.error("Please log in to add to cart!", {
+                            position: "bottom-right",
+                            duration: 3000,
+                          });
+                          return;
+                        }
+                        handleAddToCart(
+                          user.id,
+                          _id,
+                          name,
+                          price,
+                          image,
+                          user.token
+                        );
+                      }}
+                      disabled={isProductInCart(_id)}
                     >
-                      <span className="bg-white relative left-[6px] rounded-full p-1">
-                        <MdOutlineShoppingCart className="text-primary rounded-full" />
-                      </span>
+                      {!isProductInCart(_id) ? (
+                        <span className="bg-white relative left-[6px] rounded-full p-1">
+                          <MdOutlineShoppingCart className="text-primary rounded-full" />
+                        </span>
+                      ) : (
+                        ""
+                      )}
                       <span className="py-2 px-4 text-white rounded-full uppercase text-sm font-bold">
-                        Add to cart
+                        {isProductInCart(_id) ? "In Cart" : "Add to Cart"}
                       </span>
                     </button>
                   </div>

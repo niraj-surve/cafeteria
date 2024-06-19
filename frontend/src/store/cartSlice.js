@@ -1,3 +1,4 @@
+// cartSlice.js
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import StatusCode from "../util/StatusCode";
@@ -66,7 +67,11 @@ export const addToCart = createAsyncThunk(
 const cartSlice = createSlice({
   name: "cart",
   initialState,
-  reducers: {},
+  reducers: {
+    resetCartState: (state) => {
+      return initialState;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getCartItems.pending, (state) => {
@@ -92,8 +97,8 @@ const cartSlice = createSlice({
         state.error = null;
         toast.success("Added to cart!", {
           position: "bottom-right",
-          duration: 3000
-        })
+          duration: 3000,
+        });
       })
       .addCase(addToCart.rejected, (state, action) => {
         state.status = StatusCode.ERROR;
@@ -105,5 +110,7 @@ const cartSlice = createSlice({
       });
   },
 });
+
+export const { resetCartState } = cartSlice.actions;
 
 export default cartSlice.reducer;
