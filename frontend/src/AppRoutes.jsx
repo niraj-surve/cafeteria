@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound/NotFound";
 import Login from "./pages/Login/Login";
 import { checkLoginStatus } from "./store/userSlice";
 import Register from "./pages/Register/Register";
+import Checkout from "./pages/Checkout/Checkout";
 
 const AppRoutes = () => {
   const dispatch = useDispatch();
@@ -27,7 +28,6 @@ const AppRoutes = () => {
       <Route path="/" element={<Home />} />
       <Route path="/product/:id" element={<Product />} />
       <Route path="/cart" element={<Cart />} />
-      {/* Redirect to home if user is logged in and tries to access login page */}
       {!user ? (
         <Route path="/login" element={<Login />} />
       ) : (
@@ -37,6 +37,11 @@ const AppRoutes = () => {
         <Route path="/register" element={<Register />} />
       ) : (
         <Route path="/register" element={<Navigate to="/" replace />} />
+      )}
+      {user ? (
+        <Route path="/cart/checkout" element={<Checkout />} />
+      ) : (
+        <Route path="/cart/checkout" element={<Navigate to="/" replace />} />
       )}
       <Route path="/*" element={<NotFound />} />
     </Routes>

@@ -133,9 +133,11 @@ const Cart = () => {
       {cartItems.length > 0 ? (
         <div className="flex justify-between">
           <p className="text-xl font-bold">Total: ₹ {totalPrice}</p>
-          <button className="bg-success text-white px-4 py-2 rounded hover:bg-success focus:outline-none">
-            Checkout
-          </button>
+          <Link to={"/cart/checkout"}>
+            <button className="bg-success text-white px-4 py-2 rounded hover:bg-success focus:outline-none">
+              Checkout
+            </button>
+          </Link>
         </div>
       ) : null}
     </div>
