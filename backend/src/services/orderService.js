@@ -4,7 +4,6 @@ import User from "../models/user.js";
 export const addOrder = async (req, res) => {
   try {
     const { userId, products, name, address, paymentOption } = req.body;
-
     if (!userId) {
       return res
         .status(400)

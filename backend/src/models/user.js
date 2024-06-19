@@ -25,10 +25,11 @@ const orderProductSchema = new mongoose.Schema({
 });
 
 const orderSchema = new mongoose.Schema({
-  orderId: { type: String, unique: true },
+  orderId: { type: String },
   products: [orderProductSchema],
   name: { type: String, required: true },
   address: { type: String, required: true },
+  status: { type: String, default: "pending" },
   paymentOption: { type: String, required: true },
   orderDate: { type: Date, default: Date.now },
 });
@@ -36,7 +37,7 @@ const orderSchema = new mongoose.Schema({
 // Pre-save hook to generate a unique orderId
 orderSchema.pre("save", function (next) {
   if (!this.orderId) {
-    this.orderId = new mongoose.Types.ObjectId().toString();
+    this.orderId = mongoose.Types.ObjectId().toString();
   }
   next();
 });

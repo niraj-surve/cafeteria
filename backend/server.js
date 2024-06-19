@@ -31,7 +31,7 @@ mongoose
 
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/cart", cartRouter);
-app.use("/api/v1/order", orderRouter);
+app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/user", userRouter);
 
 const PORT = 3000;

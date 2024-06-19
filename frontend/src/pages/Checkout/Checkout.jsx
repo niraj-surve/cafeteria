@@ -1,15 +1,11 @@
 import React, { useState } from "react";
-import { FaMinus, FaPlus, FaUser } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  clearCart,
-  decrementQuantity,
-  incrementQuantity,
-  removeFromCart,
-} from "../../store/cartSlice";
 import { useForm } from "react-hook-form";
 import { selectUser } from "../../store/userSlice";
+import { clearCart } from "../../store/cartSlice";
+import { addOrder } from "../../store/orderSlice";
+import toast from "react-hot-toast";
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -23,7 +19,6 @@ const Checkout = () => {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm({
     defaultValues: {
       name: user.name,
@@ -39,29 +34,53 @@ const Checkout = () => {
     setPaymentMethod(event.target.value);
   };
 
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const userId = storedUser ? storedUser.id : null;
+  const token = storedUser ? storedUser.token : null;
+
   const onSubmit = (data) => {
     const orderData = {
+      userId: userId,
       name: data.name,
       address: data.address,
-      products: cartItems,
+      products: cartItems.map((item) => ({
+        productId: item.productId,
+        name: item.name,
+        price: item.price,
+        image: item.image,
+        quantity: item.quantity,
+      })),
       paymentOption: paymentMethod,
       orderDate: new Date().toISOString(),
     };
 
-    console.log(orderData);
-
-    // Navigate to a success page or clear the cart after order is placed
-    // Example: navigate("/order-success");
-
-    // Optionally, clear the form and cart
-    // reset();
-    // dispatch(clearCart());
+    if (paymentMethod === "cash") {
+      dispatch(addOrder({ orderData, token }))
+        .unwrap()
+        .then(() => {
+          toast.success("Order placed!", {
+            position: "bottom-right",
+            duration: 3000,
+          });
+          dispatch(clearCart({ userId, token }));
+          navigate("/");
+        })
+        .catch((error) => {
+          console.error("Failed to place order: ", error);
+          toast.error("Failed to place order! Please try again.", {
+            position: "bottom-right",
+            duration: 3000,
+          });
+        });
+    } else if (paymentMethod === "other") {
+      navigate("/cart/checkout/payment")
+    }
   };
 
   return (
     <form
-      className="max-w-4xl h-[calc(100vh-64px)] mx-auto px-8 py-4 flex flex-col justify-between gap-8 font-mulish"
       onSubmit={handleSubmit(onSubmit)}
+      className="max-w-4xl h-[calc(100vh-64px)] mx-auto px-8 py-4 flex flex-col justify-between gap-8 font-mulish"
     >
       <h2 className="text-3xl font-bold mb-4">Checkout</h2>
       <div className="flex flex-col gap-8">
@@ -188,12 +207,7 @@ const Checkout = () => {
           <p className="text-xl font-bold">Total: ₹ {totalPrice}</p>
           <button
             type="submit"
-            className={`text-white px-4 py-2 rounded border focus:outline-none ${
-              paymentMethod === ""
-                ? "bg-green-200 text-success border-green-200"
-                : "bg-success hover:bg-white btn-transition border-success hover:text-success"
-            }`}
-            disabled={paymentMethod === "" ? true : false}
+            className="bg-success text-white px-4 py-2 rounded hover:bg-success focus:outline-none"
           >
             {paymentMethod === "cash" ? "Place Order" : "Go to payments"}
           </button>
