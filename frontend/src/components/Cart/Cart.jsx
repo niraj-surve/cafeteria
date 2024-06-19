@@ -1,47 +1,31 @@
 import React from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 const Cart = () => {
-  // Mock data to replace Redux state
-  const items = [
-    {
-      id: 1,
-      image: "coffee1.jpg",
-      name: "Coffee 1",
-      price: 100,
-      quantity: 2,
-    },
-    {
-      id: 2,
-      image: "coffee2.jpg",
-      name: "Coffee 2",
-      price: 150,
-      quantity: 1,
-    },
-  ];
+  const dispatch = useDispatch();
+
+  // Use useSelector to get cart items from Redux store
+  const cartItems = useSelector((state) => state.cart.cartItems);
 
   const handleRemoveItem = (itemId) => {
-    // Replace with logic for removing item
-    console.log("Removing item with id:", itemId);
+    // dispatch(removeItemFromCart(itemId));
   };
 
   const handleClearCart = () => {
-    // Replace with logic for clearing cart
-    console.log("Clearing cart");
+    // dispatch(clearCart());
   };
 
   const handleIncrement = (itemId) => {
-    // Replace with logic for incrementing item quantity
-    console.log("Incrementing quantity for item:", itemId);
+    // dispatch(incrementQuantity(itemId));
   };
 
   const handleDecrement = (itemId) => {
-    // Replace with logic for decrementing item quantity
-    console.log("Decrementing quantity for item:", itemId);
+    // dispatch(decrementQuantity(itemId));
   };
 
-  const totalPrice = items.reduce((total, item) => {
+  const totalPrice = cartItems.reduce((total, item) => {
     return total + item.price * item.quantity;
   }, 0);
 
@@ -57,7 +41,7 @@ const Cart = () => {
         </button>
       </div>
       <div>
-        {items.length === 0 ? (
+        {cartItems.length === 0 ? (
           <div className="relative top-40 flex flex-col items-center gap-4">
             <p className="text-center font-mulish text-xl">
               Your cart is empty!
@@ -70,7 +54,7 @@ const Cart = () => {
           </div>
         ) : (
           <div>
-            {items.map((item, index) => (
+            {cartItems.map((item, index) => (
               <div
                 key={index}
                 className="flex items-center justify-between border-b border-gray-300 py-4"
