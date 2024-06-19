@@ -28,6 +28,7 @@ const orderSchema = new mongoose.Schema({
   orderId: { type: String },
   products: [orderProductSchema],
   name: { type: String, required: true },
+  totalPrice: { type: Number, required: true },
   status: { type: String, default: "pending" },
   paymentOption: { type: String, required: true },
   orderDate: { type: Date, default: Date.now },

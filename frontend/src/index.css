@@ -45,7 +45,8 @@ body {
 }
 
 body::-webkit-scrollbar,
-#cartMenu::-webkit-scrollbar {
+#cartMenu::-webkit-scrollbar,
+#productMenu::-webkit-scrollbar {
   @apply w-[5px] absolute right-0;
 }
 
@@ -53,15 +54,16 @@ body::-webkit-scrollbar-track {
   @apply bg-slate-600;
 }
 
-body::-webkit-scrollbar-thumb,
-#cartMenu::-webkit-scrollbar-thumb{
+body::-webkit-scrollbar-thumb{
   @apply bg-primary;
 }
 
-#cartMenu::-webkit-scrollbar-thumb {
+#cartMenu::-webkit-scrollbar-thumb,
+#productMenu::-webkit-scrollbar-thumb {
   @apply bg-primary rounded-lg;
 }
 
-#cartMenu::-webkit-scrollbar-track {
+#cartMenu::-webkit-scrollbar-track,
+#productMenu::-webkit-scrollbar-track {
   @apply bg-slate-600 rounded-lg;
 }

@@ -10,6 +10,7 @@ import { checkLoginStatus } from "./store/userSlice";
 import Register from "./pages/Register/Register";
 import Checkout from "./pages/Checkout/Checkout";
 import Orders from "./components/Orders/Orders";
+import Order from "./pages/Order/Order";
 
 const AppRoutes = () => {
   const dispatch = useDispatch();
@@ -28,12 +29,14 @@ const AppRoutes = () => {
     { path: "/register", element: <Register /> },
     { path: "/cart/checkout", element: <Navigate to="/" replace /> },
     { path: "/orders", element: <Navigate to="/" replace /> },
+    { path: "/orders/:orderId", element: <Navigate to="/" replace /> },
   ];
   
   const authRoutes = [
     { path: "/login", element: <Navigate to="/" replace /> },
     { path: "/register", element: <Navigate to="/" replace /> },
     { path: "/orders", element: <Orders /> },
+    { path: "/orders/:orderId", element: <Order /> },
     { path: "/cart/checkout", element: <Checkout /> },
   ];
 

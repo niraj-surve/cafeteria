@@ -48,6 +48,7 @@ const Checkout = () => {
         image: item.image,
         quantity: item.quantity,
       })),
+      totalPrice: totalPrice,
       paymentOption: paymentMethod,
       orderDate: new Date().toISOString(),
     };

@@ -4,6 +4,7 @@ import { cancelOrder, fetchOrders } from "../../store/orderSlice.js";
 import { selectUser } from "../../store/userSlice";
 import StatusCode from "../../util/StatusCode.js";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 const Orders = () => {
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ const Orders = () => {
       if (result.payload === orderId) {
         toast.success("Order cancelled successfully!", {
           position: "bottom-right",
-          duration: 3000
+          duration: 3000,
         });
       }
     });
@@ -51,7 +52,10 @@ const Orders = () => {
           {orders.map((order) => (
             <li key={order.orderId} className="border-b py-4">
               <div className="flex justify-between items-center mb-4 font-mulish">
-                <div className="flex gap-8 text-sm">
+                <Link
+                  to={`/orders/${order.orderId}`}
+                  className="flex gap-8 text-sm"
+                >
                   <div>
                     {order.products.length > 0 && (
                       <img
@@ -90,13 +94,15 @@ const Orders = () => {
                         : "Online Payment"}
                     </div>
                   </div>
-                </div>
-                <button
-                  onClick={() => handleCancelOrder(order.orderId)}
-                  className="btn-transition text-sm bg-primary hover:bg-white border border-primary text-white hover:text-primary px-4 py-2 rounded focus"
-                >
-                  Cancel Order
-                </button>
+                </Link>
+                {order.status === "pending" && (
+                  <button
+                    onClick={() => handleCancelOrder(order.orderId)}
+                    className="btn-transition text-sm bg-primary hover:bg-white border border-primary text-white hover:text-primary px-4 py-2 rounded focus"
+                  >
+                    Cancel Order
+                  </button>
+                )}
               </div>
             </li>
           ))}
