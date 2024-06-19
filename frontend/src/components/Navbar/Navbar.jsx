@@ -77,19 +77,19 @@ const Navbar = () => {
                 className="absolute w-full top-32 z-[1] bg-slate-200 hidden rounded-lg"
               >
                 <Link
-                  className="p-4 w-full hover:bg-primary text-center rounded-t-lg"
+                  className="p-4 w-full hover:bg-primary hover:text-white btn-transition text-center rounded-t-lg"
                   to="/profile"
                 >
                   Profile
                 </Link>
                 <Link
-                  className="p-4 w-full hover:bg-primary text-center"
+                  className="p-4 w-full hover:bg-primary hover:text-white btn-transition text-center"
                   to="/orders"
                 >
                   Orders
                 </Link>
                 <button
-                  className="p-4 w-full hover:bg-primary text-center rounded-b-lg"
+                  className="p-4 w-full hover:bg-primary hover:text-white btn-transition text-center rounded-b-lg"
                   onClick={handleLogout}
                 >
                   Logout

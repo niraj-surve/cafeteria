@@ -3,7 +3,7 @@ import User from "../models/user.js";
 import bcrypt from "bcrypt";
 
 export const register = async (req, res) => {
-  const { name, email, phone, password, address, isAdmin, favourites } =
+  const { name, email, phone, password, isAdmin, favourites } =
     req.body;
     
   try {
@@ -32,7 +32,6 @@ export const register = async (req, res) => {
       email,
       phone,
       password: hashedPassword,
-      address,
       isAdmin,
       favourites: favourites || [],
     });
@@ -114,7 +113,6 @@ export const generateTokenResponse = (user) => {
     email: user.email,
     name: user.name,
     phone: user.phone,
-    address: user.address,
     isAdmin: user.isAdmin,
     favourites: user.favourites,
     token,

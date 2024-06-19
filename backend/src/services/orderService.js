@@ -3,7 +3,7 @@ import User from "../models/user.js";
 
 export const addOrder = async (req, res) => {
   try {
-    const { userId, products, name, address, paymentOption } = req.body;
+    const { userId, products, name, paymentOption } = req.body;
     if (!userId) {
       return res
         .status(400)
@@ -15,7 +15,7 @@ export const addOrder = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    if (!products || !address || !paymentOption) {
+    if (!products || !paymentOption) {
       return res
         .status(400)
         .json({ message: "Missing required order details" });
@@ -25,7 +25,6 @@ export const addOrder = async (req, res) => {
       orderId: new mongoose.Types.ObjectId().toString(),
       products,
       name,
-      address,
       paymentOption,
       orderDate: new Date(),
     };

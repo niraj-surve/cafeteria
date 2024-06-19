@@ -1,13 +1,10 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
-  FaAddressBook,
-  FaAddressCard,
   FaEnvelope,
   FaEye,
   FaEyeSlash,
   FaLock,
-  FaPhone,
   FaPhoneAlt,
   FaUser,
 } from "react-icons/fa";
@@ -128,24 +125,6 @@ const Register = () => {
           <div className="flex gap-4">
             <div className="w-full">
               <div className="border flex items-center rounded-lg gap-2 focus-within:ring-2 ring-[#9cc4ee]">
-                <FaAddressCard className="ml-3 text-xl text-primary" />
-                <input
-                  className="p-2 rounded-lg outline-none text-sm w-full font-mulish"
-                  type="text"
-                  name="address"
-                  id="address"
-                  placeholder="Address"
-                  {...register("address", { required: "Address is required" })}
-                />
-              </div>
-              {errors.address && (
-                <span className="text-red-500 mt-2 text-sm">
-                  {errors.address.message}
-                </span>
-              )}
-            </div>
-            <div className="w-full">
-              <div className="border flex items-center rounded-lg gap-2 focus-within:ring-2 ring-[#9cc4ee]">
                 <FaPhoneAlt className="ml-3 text-xl text-primary" />
                 <input
                   className="p-2 rounded-lg outline-none text-sm w-full font-mulish"
@@ -168,8 +147,6 @@ const Register = () => {
                 </span>
               )}
             </div>
-          </div>
-          <div className="flex gap-4">
             <div className="w-full">
               <div className="border flex items-center rounded-lg gap-2 focus-within:ring-2 ring-[#9cc4ee]">
                 <FaLock className="ml-3 text-xl text-primary" />
@@ -202,6 +179,8 @@ const Register = () => {
                 </span>
               )}
             </div>
+          </div>
+          <div className="flex gap-4">
             <div className="w-full">
               <div className="border flex items-center rounded-lg gap-2 focus-within:ring-2 ring-[#9cc4ee]">
                 <FaLock className="ml-3 text-xl text-primary" />

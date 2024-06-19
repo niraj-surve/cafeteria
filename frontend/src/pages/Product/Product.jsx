@@ -71,7 +71,7 @@ const Product = () => {
     <div className="max-w-4xl mx-auto p-8">
       <div className="flex flex-col md:flex-row items-center md:items-start">
         <img
-          src={`/coffee/${product?.image}`}
+          src={`/products/${product?.image}`}
           alt={product?.name}
           className="w-full md:w-1/2 object-cover rounded-lg shadow-md"
         />
@@ -136,7 +136,14 @@ const Product = () => {
                 : "hover:scale-[1.02] hover:duration-[300ms] bg-primary"
             }`}
             onClick={() =>
-              handleAddToCart(user.id, product._id, product.name, product.price, product.image, user.token)
+              handleAddToCart(
+                user.id,
+                product._id,
+                product.name,
+                product.price,
+                product.image,
+                user.token
+              )
             }
             disabled={isProductInCart(product._id)}
           >

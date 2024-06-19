@@ -22,7 +22,6 @@ const Checkout = () => {
   } = useForm({
     defaultValues: {
       name: user.name,
-      address: user.address,
     },
   });
 
@@ -42,7 +41,6 @@ const Checkout = () => {
     const orderData = {
       userId: userId,
       name: data.name,
-      address: data.address,
       products: cartItems.map((item) => ({
         productId: item.productId,
         name: item.name,
@@ -103,24 +101,6 @@ const Checkout = () => {
               </span>
             )}
           </div>
-          <div className="w-[300px] flex flex-col gap-2">
-            <span className="ml-2 text-sm font-bold">Address</span>
-            <div className="border flex items-center rounded-lg gap-2 focus-within:ring-2 ring-[#9cc4ee]">
-              <input
-                className="p-2 rounded-lg outline-none text-sm w-full font-mulish"
-                type="text"
-                name="address"
-                id="address"
-                placeholder="Address"
-                {...register("address", { required: "Address is required" })}
-              />
-            </div>
-            {errors.address && (
-              <span className="text-red-500 mt-2 text-sm">
-                {errors.address.message}
-              </span>
-            )}
-          </div>
         </div>
         <div className="border rounded-lg py-2 pr-3">
           <span className="ml-2 text-sm font-bold">
@@ -138,7 +118,7 @@ const Checkout = () => {
                 >
                   <div className="flex items-center space-x-4">
                     <img
-                      src={`/coffee/${item.image}`}
+                      src={`/products/${item.image}`}
                       alt={item.name}
                       className="w-16 h-16 object-cover rounded"
                     />

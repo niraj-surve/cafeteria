@@ -55,7 +55,7 @@ const Orders = () => {
                   <div>
                     {order.products.length > 0 && (
                       <img
-                        src={`/coffee/${order.products[0].image}`}
+                        src={`/products/${order.products[0].image}`}
                         alt="Product Image"
                         className="w-20 h-20 object-cover rounded"
                       />
@@ -76,8 +76,8 @@ const Orders = () => {
                   </div>
                   <div className="flex flex-col gap-2">
                     <div>
-                      <span className="font-bold">Address:</span>{" "}
-                      {order.address}
+                      <span className="font-bold">Total Items:</span>{" "}
+                      {order.products.length}
                     </div>
                     <div>
                       <span className="font-bold">Receiver's Name:</span>{" "}
@@ -86,7 +86,7 @@ const Orders = () => {
                     <div>
                       <span className="font-bold">Payment:</span>{" "}
                       {order.paymentOption === "cash"
-                        ? "Cash on Delivery (COD)"
+                        ? "Cash"
                         : "Online Payment"}
                     </div>
                   </div>

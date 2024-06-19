@@ -126,7 +126,7 @@ const ProductCards = () => {
                   <Link to={`/product/${_id}`}>
                     <img
                       className="rounded-lg"
-                      src={`/coffee/${image}`}
+                      src={`/products/${image}`}
                       alt={`${name} Image`}
                     />
                   </Link>
