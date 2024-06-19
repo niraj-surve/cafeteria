@@ -64,6 +64,23 @@ export const addToCart = createAsyncThunk(
   }
 );
 
+export const removeFromCart = createAsyncThunk(
+  "cart/removeFromCart",
+  async ({ userId, itemId, token }, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(`${apiURL}/cart/remove/${itemId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: { userId },
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -104,6 +121,27 @@ const cartSlice = createSlice({
         state.status = StatusCode.ERROR;
         state.error = action.payload;
         toast.error("Failed to add to cart!", {
+          position: "bottom-right",
+          duration: 3000,
+        });
+      })
+      .addCase(removeFromCart.pending, (state) => {
+        state.status = StatusCode.LOADING;
+        state.error = null;
+      })
+      .addCase(removeFromCart.fulfilled, (state, action) => {
+        state.cartItems = action.payload;
+        state.status = StatusCode.IDLE;
+        state.error = null;
+        toast.success("Removed from cart!", {
+          position: "bottom-right",
+          duration: 3000,
+        });
+      })
+      .addCase(removeFromCart.rejected, (state, action) => {
+        state.status = StatusCode.ERROR;
+        state.error = action.payload;
+        toast.error("Failed to remove from cart!", {
           position: "bottom-right",
           duration: 3000,
         });

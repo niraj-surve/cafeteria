@@ -2,6 +2,7 @@ import React from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { removeFromCart } from "../../store/cartSlice";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -9,8 +10,14 @@ const Cart = () => {
   // Use useSelector to get cart items from Redux store
   const cartItems = useSelector((state) => state.cart.cartItems);
 
-  const handleRemoveItem = (itemId) => {
-    // dispatch(removeItemFromCart(itemId));
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const userId = storedUser ? storedUser.id : null;
+  const token = storedUser ? storedUser.token : null;
+
+  const handleRemoveItem = (userId, itemId, token) => {
+    if (userId && token) {
+      dispatch(removeFromCart({userId, itemId, token}));
+    }
   };
 
   const handleClearCart = () => {
@@ -70,7 +77,7 @@ const Cart = () => {
                     <p className="text-gray-600">Price: ₹ {item.price}</p>
                     <div className="flex gap-2 items-center mt-2">
                       <button
-                        onClick={() => handleDecrement(item.id)}
+                        onClick={() => handleDecrement(item.productId)}
                         className="bg-white border p-2 rounded-l"
                       >
                         <FaMinus className="text-primary" />
@@ -82,7 +89,7 @@ const Cart = () => {
                         className="border border-gray-300 rounded p-1 text-center w-16 focus:outline-none cursor-default"
                       />
                       <button
-                        onClick={() => handleIncrement(item.id)}
+                        onClick={() => handleIncrement(item.productId)}
                         className="bg-white border p-2 rounded-r"
                       >
                         <FaPlus className="text-primary" />
@@ -91,7 +98,7 @@ const Cart = () => {
                   </div>
                 </div>
                 <button
-                  onClick={() => handleRemoveItem(item.id)}
+                  onClick={() => handleRemoveItem(userId, item.productId, token)}
                   className="text-red-500 font-semibold focus:outline-none"
                 >
                   Remove
