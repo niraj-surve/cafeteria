@@ -124,6 +124,23 @@ export const decrementQuantity = createAsyncThunk(
   }
 );
 
+export const clearCart = createAsyncThunk(
+  "cart/clearCart",
+  async ({ userId, token }, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(`${apiURL}/cart/clear`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: { userId },
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -219,6 +236,23 @@ const cartSlice = createSlice({
         state.status = StatusCode.ERROR;
         state.error = action.payload;
         toast.error("Failed to decrease quantity!", {
+          position: "bottom-right",
+          duration: 3000,
+        });
+      })
+      .addCase(clearCart.pending, (state) => {
+        state.status = StatusCode.LOADING;
+        state.error = null;
+      })
+      .addCase(clearCart.fulfilled, (state, action) => {
+        state.cartItems = action.payload;
+        state.status = StatusCode.IDLE;
+        state.error = null;
+      })
+      .addCase(clearCart.rejected, (state, action) => {
+        state.status = StatusCode.ERROR;
+        state.error = action.payload;
+        toast.error("Failed to clear cart!", {
           position: "bottom-right",
           duration: 3000,
         });

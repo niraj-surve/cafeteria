@@ -138,3 +138,23 @@ export const decreaseQuantity = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const clearCart = async (req, res) => {
+  const { userId } = req.body;
+
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Clear the cart
+    user.cart = [];
+    await user.save();
+
+    res.status(200).json(user.cart);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

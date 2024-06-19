@@ -3,6 +3,7 @@ import { FaMinus, FaPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  clearCart,
   decrementQuantity,
   incrementQuantity,
   removeFromCart,
@@ -24,8 +25,10 @@ const Cart = () => {
     }
   };
 
-  const handleClearCart = () => {
-    // dispatch(clearCart());
+  const handleClearCart = (userId, token) => {
+    if (userId && token) {
+      dispatch(clearCart({ userId, token }));
+    }
   };
 
   const handleIncrement = (userId, itemId, token) => {
@@ -45,11 +48,11 @@ const Cart = () => {
   }, 0);
 
   return (
-    <div className="max-w-4xl mx-auto p-8">
+    <div className="max-w-4xl mx-auto p-8 flex flex-col gap-8">
       <div className="flex justify-between items-center">
         <h2 className="text-3xl font-bold mb-4">Shopping Cart</h2>
         <button
-          onClick={handleClearCart}
+          onClick={() => handleClearCart(userId, token)}
           className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none"
         >
           Clear Cart
@@ -68,7 +71,10 @@ const Cart = () => {
             </Link>
           </div>
         ) : (
-          <div>
+          <div
+            id="cartMenu"
+            className="h-[50vh] overflow-x-hidden overflow-y-auto px-4"
+          >
             {cartItems.map((item, index) => (
               <div
                 key={index}
@@ -85,8 +91,10 @@ const Cart = () => {
                     <p className="text-gray-600">Price: ₹ {item.price}</p>
                     <div className="flex gap-2 items-center mt-2">
                       <button
-                        onClick={() => item.quantity > 1 ? 
-                          handleDecrement(userId, item.productId, token) : null
+                        onClick={() =>
+                          item.quantity > 1
+                            ? handleDecrement(userId, item.productId, token)
+                            : null
                         }
                         className="bg-white border p-2 rounded-l"
                       >
@@ -119,15 +127,17 @@ const Cart = () => {
                 </button>
               </div>
             ))}
-            <div className="flex justify-between mt-4">
-              <p className="text-xl font-bold">Total: ₹ {totalPrice}</p>
-              <button className="bg-success text-white px-4 py-2 rounded hover:bg-success focus:outline-none">
-                Checkout
-              </button>
-            </div>
           </div>
         )}
       </div>
+      {cartItems.length > 0 ? (
+        <div className="flex justify-between">
+          <p className="text-xl font-bold">Total: ₹ {totalPrice}</p>
+          <button className="bg-success text-white px-4 py-2 rounded hover:bg-success focus:outline-none">
+            Checkout
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 };

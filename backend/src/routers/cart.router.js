@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authenticateUser } from "../services/userService.js";
-import { getCartItems, addToCart, removeFromCart, decreaseQuantity, increaseQuantity } from "../services/cartService.js";
+import { getCartItems, addToCart, removeFromCart, decreaseQuantity, increaseQuantity, clearCart } from "../services/cartService.js";
 
 const router = Router();
 
@@ -18,6 +18,9 @@ router.patch("/increase/:productId", authenticateUser, increaseQuantity);
 
 // Route to decrease quantity of a product in the user's cart by 1
 router.patch("/decrease/:productId", authenticateUser, decreaseQuantity);
+
+// Route to clear the user's cart
+router.delete("/clear", authenticateUser, clearCart);
 
 
 export default router;
