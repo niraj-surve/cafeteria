@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaMinus, FaPlus, FaUser } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   clearCart,
@@ -13,9 +13,9 @@ import { selectUser } from "../../store/userSlice";
 
 const Checkout = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState("");
 
-  // Use useSelector to get cart items from Redux store
   const cartItems = useSelector((state) => state.cart.cartItems);
   const user = useSelector(selectUser);
 
@@ -39,8 +39,30 @@ const Checkout = () => {
     setPaymentMethod(event.target.value);
   };
 
+  const onSubmit = (data) => {
+    const orderData = {
+      name: data.name,
+      address: data.address,
+      products: cartItems,
+      paymentOption: paymentMethod,
+      orderDate: new Date().toISOString(),
+    };
+
+    console.log(orderData);
+
+    // Navigate to a success page or clear the cart after order is placed
+    // Example: navigate("/order-success");
+
+    // Optionally, clear the form and cart
+    // reset();
+    // dispatch(clearCart());
+  };
+
   return (
-    <form className="max-w-4xl h-[calc(100vh-64px)] mx-auto px-8 py-4 flex flex-col justify-between gap-8 font-mulish">
+    <form
+      className="max-w-4xl h-[calc(100vh-64px)] mx-auto px-8 py-4 flex flex-col justify-between gap-8 font-mulish"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <h2 className="text-3xl font-bold mb-4">Checkout</h2>
       <div className="flex flex-col gap-8">
         <div className="flex gap-4">
@@ -164,11 +186,17 @@ const Checkout = () => {
       {cartItems.length > 0 ? (
         <div className="flex justify-between">
           <p className="text-xl font-bold">Total: ₹ {totalPrice}</p>
-          <Link to={"/cart/checkout"}>
-            <button className="bg-success text-white px-4 py-2 rounded hover:bg-success focus:outline-none">
-              {paymentMethod === "cash" ? "Place Order" : "Go to payments"}
-            </button>
-          </Link>
+          <button
+            type="submit"
+            className={`text-white px-4 py-2 rounded border focus:outline-none ${
+              paymentMethod === ""
+                ? "bg-green-200 text-success border-green-200"
+                : "bg-success hover:bg-white btn-transition border-success hover:text-success"
+            }`}
+            disabled={paymentMethod === "" ? true : false}
+          >
+            {paymentMethod === "cash" ? "Place Order" : "Go to payments"}
+          </button>
         </div>
       ) : null}
     </form>
