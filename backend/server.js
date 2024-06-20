@@ -7,6 +7,7 @@ import productRouter from "./src/routers/product.router.js";
 import cartRouter from "./src/routers/cart.router.js";
 import orderRouter from "./src/routers/order.router.js";
 import userRouter from "./src/routers/user.router.js";
+import paymentRouter from "./src/routers/payment.router.js";
 
 dotenv.config();
 
@@ -33,6 +34,7 @@ app.use("/api/v1/products", productRouter);
 app.use("/api/v1/cart", cartRouter);
 app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/payment", paymentRouter);
 
 const PORT = 3000;
 app.listen(PORT, () => {

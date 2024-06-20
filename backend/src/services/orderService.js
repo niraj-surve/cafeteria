@@ -3,7 +3,7 @@ import User from "../models/user.js";
 
 export const addOrder = async (req, res) => {
   try {
-    const { userId, products, name, totalPrice, paymentOption } = req.body;
+    const { orderId, userId, products, name, totalPrice, paymentOption } = req.body;
     if (!userId) {
       return res
         .status(400)
@@ -22,7 +22,7 @@ export const addOrder = async (req, res) => {
     }
 
     const newOrder = {
-      orderId: new mongoose.Types.ObjectId().toString(),
+      orderId: orderId ? orderId : new mongoose.Types.ObjectId().toString(),
       products,
       name,
       totalPrice,
