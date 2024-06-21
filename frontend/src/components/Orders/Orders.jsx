@@ -51,21 +51,21 @@ const Orders = () => {
         <ul>
           {orders.map((order) => (
             <li key={order.orderId} className="border-b py-4">
-              <div className="flex justify-between items-center mb-4 font-mulish">
+              <div className="flex max-md:flex-col max-md:gap-4 justify-between items-center mb-4 font-mulish">
                 <Link
                   to={`/orders/${order.orderId}`}
-                  className="flex gap-8 text-sm"
+                  className="flex  max-md:items-center gap-8 text-sm"
                 >
                   <div>
                     {order.products.length > 0 && (
                       <img
                         src={`/products/${order.products[0].image}`}
                         alt="Product Image"
-                        className="w-20 h-20 object-cover rounded"
+                        className="md:w-20 md:h-20 max-md:w-32 object-cover rounded-lg"
                       />
                     )}
                   </div>
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2 max-md:w-full">
                     <div>
                       <span className="font-bold">Order ID:</span>{" "}
                       {order.orderId}
@@ -78,7 +78,7 @@ const Orders = () => {
                       <span className="font-bold">Status:</span> {order.status}
                     </div>
                   </div>
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2 max-md:hidden">
                     <div>
                       <span className="font-bold">Total Items:</span>{" "}
                       {order.products.length}
@@ -98,7 +98,7 @@ const Orders = () => {
                 {order.status === "Pending" && (
                   <button
                     onClick={() => handleCancelOrder(order.orderId)}
-                    className="btn-transition text-sm bg-primary hover:bg-white border border-primary text-white hover:text-primary px-4 py-2 rounded focus"
+                    className="btn-transition text-sm max-md:self-end bg-primary hover:bg-white border border-primary text-white hover:text-primary px-4 py-2 rounded focus"
                   >
                     Cancel Order
                   </button>

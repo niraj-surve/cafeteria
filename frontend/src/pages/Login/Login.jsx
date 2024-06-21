@@ -58,7 +58,7 @@ const Login = () => {
   }, [status, user, navigate, searchParams]);
 
   return (
-    <div className="h-[calc(100vh-64px)] flex items-center justify-center">
+    <div className="h-[calc(100vh-64px)] max-md:px-8 flex items-center justify-center">
       <div className="p-8 rounded-lg" style={{ boxShadow: "0 0 5px gray" }}>
         <h1 className="w-full text-center text-3xl font-black font-opensans mb-8 text-dark">
           LOG IN

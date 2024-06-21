@@ -48,12 +48,12 @@ const Cart = () => {
   }, 0);
 
   return (
-    <div className="max-w-4xl mx-auto p-8 flex flex-col gap-8">
+    <div className="max-w-4xl max-md:h-[calc(100vh-64px)] mx-auto p-8 flex flex-col gap-8">
       <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold mb-4">Shopping Cart</h2>
+        <h2 className="text-3xl max-md:text-2xl font-bold mb-4">Shopping Cart</h2>
         <button
           onClick={() => handleClearCart(userId, token)}
-          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none"
+          className="bg-red-500 text-white px-4 py-2 max-md:text-sm rounded hover:bg-red-600 focus:outline-none"
         >
           Clear Cart
         </button>
@@ -73,7 +73,7 @@ const Cart = () => {
         ) : (
           <div
             id="cartMenu"
-            className="h-[50vh] overflow-x-hidden overflow-y-auto px-4"
+            className="max-md:self-end md:h-[50vh] overflow-x-hidden overflow-y-auto px-4"
           >
             {cartItems.map((item, index) => (
               <div
@@ -131,7 +131,7 @@ const Cart = () => {
         )}
       </div>
       {cartItems.length > 0 ? (
-        <div className="flex justify-between">
+        <div className="flex justify-between max-md:absolute max-md:bottom-4 max-md:w-[85vw]">
           <p className="text-xl font-bold">Total: ₹ {totalPrice}</p>
           <Link to={"/cart/checkout"}>
             <button className="bg-success text-white px-4 py-2 rounded hover:bg-success focus:outline-none">

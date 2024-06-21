@@ -71,7 +71,7 @@ const Register = () => {
   };
 
   return (
-    <div className="h-[calc(100vh-64px)] flex items-center justify-center">
+    <div className="h-[calc(100vh-64px)] max-md:px-8 flex items-center justify-center">
       <div className="p-8 rounded-lg" style={{ boxShadow: "0 0 5px gray" }}>
         <h1 className="w-full text-center text-3xl font-black font-opensans mb-8 text-dark">
           REGISTER
@@ -81,9 +81,9 @@ const Register = () => {
           className="flex flex-col gap-8"
           autoComplete="off"
         >
-          <div className="flex gap-4">
+          <div className="flex gap-4 max-md:flex-col">
             <div className="w-full">
-              <div className="border flex items-center rounded-lg gap-2 focus-within:ring-2 ring-[#9cc4ee]">
+              <div className="border max-md:mb-4 flex items-center rounded-lg gap-2 focus-within:ring-2 ring-[#9cc4ee]">
                 <FaUser className="ml-3 text-xl text-primary" />
                 <input
                   className="p-2 rounded-lg outline-none text-sm w-full font-mulish"
@@ -122,9 +122,9 @@ const Register = () => {
               )}
             </div>
           </div>
-          <div className="flex gap-4">
+          <div className="flex gap-4 max-md:flex-col">
             <div className="w-full">
-              <div className="border flex items-center rounded-lg gap-2 focus-within:ring-2 ring-[#9cc4ee]">
+              <div className="border max-md:mb-4 flex items-center rounded-lg gap-2 focus-within:ring-2 ring-[#9cc4ee]">
                 <FaPhoneAlt className="ml-3 text-xl text-primary" />
                 <input
                   className="p-2 rounded-lg outline-none text-sm w-full font-mulish"

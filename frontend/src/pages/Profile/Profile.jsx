@@ -32,9 +32,9 @@ const Profile = () => {
   };
 
   return (
-    <div className="h-[calc(100vh-64px)] flex justify-center items-center">
-      <div className="flex gap-4 justify-center">
-        <div className="w-[30vw] p-8 flex flex-col items-center justify-center gap-4 bg-dark text-white rounded-lg ">
+    <div className="md:h-[calc(100vh-64px)] max-md:p-8 md:flex justify-center items-center">
+      <div className="flex gap-4 justify-center max-md:flex-col">
+        <div className="md:w-[30vw] p-8 flex flex-col items-center justify-center gap-4 bg-dark text-white rounded-lg ">
           <FaUserCircle className="text-8xl" />
           <div className="flex flex-col gap-4 items-center font-mulish">
             <div className="flex flex-col items-center gap-2">
