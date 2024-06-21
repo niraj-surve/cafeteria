@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { cancelOrder, getOrderById } from "../../store/orderSlice";
 import StatusCode from "../../util/StatusCode";
 import toast from "react-hot-toast";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 
 const Order = () => {
   const { orderId } = useParams();
@@ -46,7 +47,11 @@ const Order = () => {
   }, [dispatch, orderId]);
 
   if (status === StatusCode.LOADING) {
-    return <div className="text-center mt-4">Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-[calc(100vh-64px)]">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   if (status === StatusCode.ERROR) {

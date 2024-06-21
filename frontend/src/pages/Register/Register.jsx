@@ -71,7 +71,7 @@ const Register = () => {
   };
 
   return (
-    <div className="h-[calc(100vh-64px)] max-md:px-8 flex items-center justify-center">
+    <div className="md:h-[calc(100vh-64px)] max-md:px-8 max-md:py-10 flex items-center justify-center">
       <div className="p-8 rounded-lg" style={{ boxShadow: "0 0 5px gray" }}>
         <h1 className="w-full text-center text-3xl font-black font-opensans mb-8 text-dark">
           REGISTER

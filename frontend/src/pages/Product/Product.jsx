@@ -9,6 +9,7 @@ import { MdOutlineShoppingCart } from "react-icons/md";
 import toast from "react-hot-toast";
 import NotFound from "../NotFound/NotFound";
 import { toggleFavorite, selectUser } from "../../store/userSlice";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 
 const Product = () => {
   const dispatch = useDispatch();
@@ -46,13 +47,13 @@ const Product = () => {
       });
       return;
     }
-    dispatch(toggleFavorite(product._id)); // Dispatch action with product ID
+    dispatch(toggleFavorite(product._id));
   };
 
   if (status === StatusCode.LOADING) {
     return (
       <div className="flex justify-center items-center h-screen">
-        Loading...
+        <LoadingSpinner />
       </div>
     );
   }

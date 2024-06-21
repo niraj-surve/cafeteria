@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { addOrder } from "../../store/orderSlice";
 import { clearCart } from "../../store/cartSlice";
 import toast from "react-hot-toast";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const SuccessPayment = () => {
   const dispatch = useDispatch();
@@ -63,8 +64,8 @@ const SuccessPayment = () => {
 
   if (fetchingData) {
     return (
-      <div>
-        <h2>Processing Payment...</h2>
+      <div className="flex justify-center items-center h-[calc(100vh-64px)]">
+        <LoadingSpinner text={"Processing Payment"} />
       </div>
     );
   }

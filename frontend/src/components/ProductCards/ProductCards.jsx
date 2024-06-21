@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getProducts, getProductsTags } from "../../store/productSlice";
 import { selectUser, toggleFavorite } from "../../store/userSlice";
 import { addToCart } from "../../store/cartSlice";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 const fadeInRight = keyframes`
   from {
@@ -70,7 +71,11 @@ const ProductCards = () => {
   });
 
   if (status === StatusCode.LOADING) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   if (status === StatusCode.ERROR) {

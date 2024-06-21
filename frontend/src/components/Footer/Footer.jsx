@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <div className="text-center px-6 py-[16px] w-full bg-primary text-white max-sm:text-sm">
+    <div className="text-center text-sm px-6 py-[16px] w-full bg-primary text-white">
       Copyright ©{" "}
       <a href="/">
         <span className="hover:text-dark">Cafeteria |</span>

@@ -4,6 +4,7 @@ import { FaEye, FaEyeSlash, FaLock, FaUser } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../store/userSlice";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import StatusCode from "../../util/StatusCode";
 
 const validateEmail = (email) => {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -51,9 +52,9 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (status === "succeeded" && user) {
+    if (status === StatusCode.IDLE && user) {
       const returnUrl = searchParams.get("returnurl") || "/";
-      navigate(returnUrl); // Navigate to returnUrl after successful login
+      navigate(returnUrl);
     }
   }, [status, user, navigate, searchParams]);
 

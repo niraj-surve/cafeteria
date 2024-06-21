@@ -22,10 +22,6 @@ const AppRoutes = () => {
     dispatch(checkLoginStatus());
   }, [dispatch]);
 
-  if (status === "loading") {
-    return <div>Loading...</div>;
-  }
-
   const guestRoutes = [
     { path: "/login", element: <Login /> },
     { path: "/register", element: <Register /> },

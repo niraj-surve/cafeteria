@@ -219,7 +219,7 @@ const Checkout = () => {
           <p className="text-xl font-bold">Total: ₹ {totalPrice}</p>
           <button
             type="submit"
-            className="bg-success text-white px-4 py-2 rounded hover:bg-success focus:outline-none"
+            className="text-sm bg-success text-white px-4 py-2 rounded hover:bg-white border border-success btn-transition hover:text-success focus:outline-none"
           >
             {paymentMethod === "cash" ? "Place Order" : "Go to payments"}
           </button>

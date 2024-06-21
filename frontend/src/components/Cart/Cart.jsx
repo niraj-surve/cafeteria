@@ -12,7 +12,6 @@ import {
 const Cart = () => {
   const dispatch = useDispatch();
 
-  // Use useSelector to get cart items from Redux store
   const cartItems = useSelector((state) => state.cart.cartItems);
 
   const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -56,7 +55,7 @@ const Cart = () => {
         {cartItems.length > 0 && (
           <button
             onClick={() => handleClearCart(userId, token)}
-            className="bg-red-500 text-white px-4 py-2 max-md:text-sm rounded hover:bg-red-600 focus:outline-none"
+            className="text-sm bg-red-500 text-white px-4 py-2 max-md:text-sm rounded border border-red-600 hover:bg-white btn-transition hover:text-red-600 focus:outline-none"
           >
             Clear Cart
           </button>
@@ -69,7 +68,7 @@ const Cart = () => {
               Your cart is empty!
             </p>
             <Link to={"/"}>
-              <button className="bg-success w-fit px-3 py-2 rounded-lg text-white font-opensans border border-success hover:bg-white hover:text-success btn-transition">
+              <button className="bg-primary w-fit px-3 py-2 rounded-lg text-white font-opensans border border-primary hover:bg-white hover:text-primary btn-transition">
                 Explore Products
               </button>
             </Link>
@@ -125,7 +124,7 @@ const Cart = () => {
                   onClick={() =>
                     handleRemoveItem(userId, item.productId, token)
                   }
-                  className="text-red-500 font-semibold focus:outline-none"
+                  className="text-sm text-red-500 font-semibold focus:outline-none"
                 >
                   Remove
                 </button>
@@ -138,7 +137,7 @@ const Cart = () => {
         <div className="flex justify-between max-md:absolute max-md:bottom-4 max-md:w-[85vw]">
           <p className="text-xl font-bold">Total: ₹ {totalPrice}</p>
           <Link to={"/cart/checkout"}>
-            <button className="bg-success text-white px-4 py-2 rounded hover:bg-success focus:outline-none">
+            <button className="text-sm bg-success text-white px-4 py-2 rounded hover:bg-white border border-success hover:text-success focus:outline-none btn-transition">
               Checkout
             </button>
           </Link>
