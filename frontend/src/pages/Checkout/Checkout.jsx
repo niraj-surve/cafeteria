@@ -39,6 +39,13 @@ const Checkout = () => {
   const token = storedUser ? storedUser.token : null;
 
   const onSubmit = async (data) => {
+    if(paymentMethod === ""){
+      toast.error("Please select payment option!", {
+        position: "bottom-right",
+        duration: 3000
+      })
+    }
+
     const orderData = {
       userId: userId,
       name: data.name,

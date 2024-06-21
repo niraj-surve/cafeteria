@@ -48,7 +48,7 @@ const Cart = () => {
   }, 0);
 
   return (
-    <div className="max-w-4xl max-md:h-[calc(100vh-64px)] mx-auto p-8 flex flex-col gap-8">
+    <div className="max-w-4xl h-[calc(100vh-64px)] mx-auto p-8 flex flex-col gap-8">
       <div className="flex justify-between items-center">
         <h2 className="text-3xl max-md:text-2xl font-bold mb-4">Shopping Cart</h2>
         <button

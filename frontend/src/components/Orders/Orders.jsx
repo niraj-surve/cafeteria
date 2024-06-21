@@ -43,7 +43,7 @@ const Orders = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-4xl h-[calc(100vh-64px)] mx-auto px-4 py-8">
       <h2 className="text-3xl font-bold mb-8">Your Orders</h2>
       {orders.length === 0 ? (
         <p className="text-gray-500 text-lg">No orders found.</p>
