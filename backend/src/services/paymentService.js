@@ -91,7 +91,9 @@ export const validatePayment = async (req, res) => {
       .request(options)
       .then((response) => {
         if (response.data.success) {
-          res.redirect("http://localhost:5173/successPayment?status=success");
+          res.redirect(
+            "https://cafeteria-famt.netlify.app/successPayment?status=success"
+          );
         } else {
           res.status(400).send("Payment verification failed");
         }
