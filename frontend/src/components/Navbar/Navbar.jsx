@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import DarkLogo from "../../assets/logo-dark.png";
-import LightLogo from "../../assets/logo-light.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../../store/userSlice";
@@ -54,7 +53,7 @@ const Navbar = () => {
           to="/"
           className="flex items-center text-2xl font-black dark:text-white font-opensans"
         >
-          <img src={DarkLogo} width={40} alt="Logo" />
+          <img src={DarkLogo} width={50} alt="Logo" />
           <span className="max-sm:hidden text-dark">
             Cafe<span className="text-primary">teria</span>
           </span>
@@ -68,8 +67,8 @@ const Navbar = () => {
                 className="flex items-center gap-4 px-4 py-[20px] w-full font-semibold text-dark"
                 to="/profile"
               >
-                <FaUser className="text-xl" />
-                <span>{user.name}</span>
+                <FaUser className="text-xl text-primary" />
+                <span>{user.name.split(' ')[0]}</span>
                 <IoIosArrowDown className="absolute right-0" />
               </Link>
               <div

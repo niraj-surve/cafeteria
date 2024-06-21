@@ -62,7 +62,7 @@ const Order = () => {
   }
 
   return (
-    <div className="px-14 py-8 md:h-[calc(100vh-64px)] max-md:gap-4 flex flex-col justify-between">
+    <div className="px-14 py-8 h-[calc(100vh-64px)] max-md:gap-4 flex flex-col justify-between">
       <h1 className="text-3xl font-bold mb-4 text-dark font-opensans">
         Order Details
       </h1>

@@ -17,7 +17,7 @@ export const createPaymentSession = async (req, res) => {
       merchantUserId: req.body.MID,
       name: req.body.name,
       amount: req.body.amount * 100,
-      redirectUrl: `https://cafeteria-l4ic.onrender.com/api/v1/payment/${merchantTransactionId}`,
+      redirectUrl: `http://localhost:3000/api/v1/payment/${merchantTransactionId}`,
       redirectMode: "POST",
       mobileNumber: req.body.phone,
       paymentInstrument: {
@@ -92,7 +92,7 @@ export const validatePayment = async (req, res) => {
       .then((response) => {
         if (response.data.success) {
           res.redirect(
-            "https://cafeteria-famt.netlify.app/successPayment?status=success"
+            "http://localhost:5173/successPayment?status=success"
           );
         } else {
           res.status(400).send("Payment verification failed");
