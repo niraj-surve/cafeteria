@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
@@ -6,8 +6,6 @@ import { selectUser } from "../../store/userSlice";
 import { clearCart } from "../../store/cartSlice";
 import { addOrder } from "../../store/orderSlice";
 import toast from "react-hot-toast";
-import { getSessionKey } from "../../store/paymentSlice";
-import { load } from "@cashfreepayments/cashfree-js";
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -27,18 +25,6 @@ const Checkout = () => {
       name: user.name,
     },
   });
-
-  let cashfree;
-
-  const initializeSDK = async () => {
-    cashfree = await load({
-      mode: "sandbox",
-    });
-  };
-
-  useEffect(() => {
-    initializeSDK();
-  }, [session]);
 
   const totalPrice = cartItems.reduce((total, item) => {
     return total + item.price * item.quantity;
@@ -87,65 +73,7 @@ const Checkout = () => {
           });
         });
     } else if (paymentMethod === "other") {
-      let paymentData = {
-        orderAmount: totalPrice,
-        orderCurrency: "INR",
-        customerData: {
-          userId: userId,
-          name: user?.name,
-          phone: user?.phone,
-          email: user?.email,
-        },
-      };
-
-      dispatch(getSessionKey({ paymentData, token })).then((res) => {
-        // Check if session is available before trying to use payment_session_id
-        if (!session || !session.payment_session_id) {
-          console.error("Session or payment session ID is not available.");
-          toast.error("Failed to start payment process. Please try again.", {
-            position: "bottom-right",
-            duration: 3000,
-          });
-          return; // Exit early or handle gracefully
-        }
-
-        const checkoutOptions = {
-          paymentSessionId: session.payment_session_id,
-          redirectTarget: "_modal",
-        };
-
-        cashfree
-          .checkout(checkoutOptions)
-          .then((result) => {
-            if (result.error) {
-              console.log(
-                "User has closed the popup or there is some payment error, Check for Payment Status"
-              );
-              console.log(result.error);
-            }
-            if (result.redirect) {
-              console.log("Payment will be redirected");
-            }
-            if (result.paymentDetails) {
-              console.log(
-                "Payment has been completed, Check for Payment Status"
-              );
-              console.log(result.paymentDetails.paymentMessage);
-            }
-          })
-          .catch((error) => {
-            console.error("Failed to initiate Cashfree checkout: ", error);
-            toast.error(
-              "Failed to initiate payment process. Please try again.",
-              {
-                position: "bottom-right",
-                duration: 3000,
-              }
-            );
-          });
-      }).catch(err => {
-        console.log(error)
-      })
+      console.log("Online")
     }
   };
 
