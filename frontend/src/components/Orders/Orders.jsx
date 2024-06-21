@@ -75,7 +75,7 @@ const Orders = () => {
                       {new Date(order.orderDate).toLocaleString()}
                     </div>
                     <div>
-                      <span className="font-bold">Status:</span> {order.status}
+                      <span className="font-bold">Order Status:</span> {order.status}
                     </div>
                   </div>
                   <div className="flex flex-col gap-2 max-md:hidden">
@@ -90,8 +90,8 @@ const Orders = () => {
                     <div>
                       <span className="font-bold">Payment:</span>{" "}
                       {order.paymentOption === "cash"
-                        ? "Cash"
-                        : "Online Payment"}
+                        ? `Cash (${order.paymentStatus})`
+                        : `Online Payment (${order.paymentStatus})`}
                     </div>
                   </div>
                 </Link>

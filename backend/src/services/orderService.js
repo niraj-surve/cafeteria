@@ -3,7 +3,7 @@ import User from "../models/user.js";
 
 export const addOrder = async (req, res) => {
   try {
-    const { orderId, userId, products, name, totalPrice, paymentOption } = req.body;
+    const { orderId, userId, products, name, email, totalPrice, paymentOption } = req.body;
     if (!userId) {
       return res
         .status(400)
@@ -25,6 +25,7 @@ export const addOrder = async (req, res) => {
       orderId: orderId ? orderId : new mongoose.Types.ObjectId().toString(),
       products,
       name,
+      email,
       totalPrice,
       paymentOption,
       paymentStatus: paymentOption === "other" ? "Paid" : "Pending",

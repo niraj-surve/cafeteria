@@ -75,7 +75,7 @@ const Order = () => {
             <span className="font-bold">Receiver Name:</span> {order.name}
           </p>
           <p className="mb-2">
-            <span className="font-bold">Status:</span> {order.status}
+            <span className="font-bold">Order Status:</span> {order.status}
           </p>
           <p className="mb-2">
             <span className="font-bold">Payment:</span>{" "}
