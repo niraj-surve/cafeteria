@@ -95,6 +95,32 @@ export const toggleFavorite = async (req, res) => {
   }
 };
 
+export const updateProfile = async (req, res) => {
+  const { userId, name, phone } = req.body;
+
+  try {
+    // Find user by ID
+    let user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update user object
+    user.name = name;
+    user.phone = phone;
+
+    // Save updated user to database
+    await user.save();
+
+    res.status(200).send(generateTokenResponse(user));
+
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res.status(500).json({ message: "Error updating profile" });
+  }
+};
+
 export const generateTokenResponse = (user) => {
   const token = jwt.sign(
     {

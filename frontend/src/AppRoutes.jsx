@@ -12,6 +12,7 @@ import Checkout from "./pages/Checkout/Checkout";
 import Orders from "./components/Orders/Orders";
 import Order from "./pages/Order/Order";
 import SuccessPayment from "./components/SuccessPayment/SuccessPayment";
+import Profile from "./pages/Profile/Profile";
 
 const AppRoutes = () => {
   const dispatch = useDispatch();
@@ -40,6 +41,7 @@ const AppRoutes = () => {
     { path: "/orders/:orderId", element: <Order /> },
     { path: "/cart/checkout", element: <Checkout /> },
     { path: "/successPayment", element: <SuccessPayment /> },
+    { path: "/profile", element: <Profile /> },
   ];
 
   const renderRoutes = user ? authRoutes : guestRoutes;

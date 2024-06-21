@@ -32,6 +32,31 @@ export const registerUser = createAsyncThunk(
   }
 );
 
+export const updateProfile = createAsyncThunk(
+  "user/updateProfile",
+  async ({ userId, name, phone, token }) => {
+    try {
+      const response = await axios.post(
+        `${apiURL}/user/profile/update`,
+        {
+          userId,
+          name,
+          phone,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data; // You can return updated user data if needed
+    } catch (error) {
+      throw Error(error.response.data.message || "Failed to update profile");
+    }
+  }
+);
+
 // Async thunk for checking login status
 export const checkLoginStatus = createAsyncThunk(
   "user/checkLoginStatus",
@@ -187,6 +212,26 @@ const userSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
         toast.error("Failed to update favorites!", {
+          position: "bottom-right",
+          duration: 3000,
+        });
+      })
+      .addCase(updateProfile.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.user = action.payload;
+        localStorage.setItem("user", JSON.stringify(action.payload));
+        toast.success("Profile updated!", {
+          position: "bottom-right",
+          duration: 3000
+        })
+      })
+      .addCase(updateProfile.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+        toast.error(action.error.message || "Failed to update profile", {
           position: "bottom-right",
           duration: 3000,
         });
