@@ -5,6 +5,7 @@ import { selectUser } from "../../store/userSlice";
 import StatusCode from "../../util/StatusCode.js";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner.jsx";
 
 const Orders = () => {
   const dispatch = useDispatch();
@@ -35,7 +36,11 @@ const Orders = () => {
   };
 
   if (status === StatusCode.LOADING) {
-    return <div className="text-center mt-4">Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   if (status === StatusCode.ERROR) {

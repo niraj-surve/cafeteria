@@ -3,10 +3,12 @@ import { useForm } from "react-hook-form";
 import { FaUser, FaEnvelope, FaPhone, FaUserCircle } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { updateProfile } from "../../store/userSlice";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+import StatusCode from "../../util/StatusCode";
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const { name, email, phone } = useSelector((state) => state.user.user);
+  const { user, status } = useSelector((state) => state.user);
 
   const phoneRegex = /^\d{10}$/;
 
@@ -20,8 +22,8 @@ const Profile = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      name: name,
-      phone: phone,
+      name: user?.name,
+      phone: user?.phone,
     },
   });
 
@@ -31,6 +33,14 @@ const Profile = () => {
     dispatch(updateProfile({ userId, name, phone, token }));
   };
 
+  if (status === StatusCode.LOADING) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
   return (
     <div className="md:h-[calc(100vh-64px)] max-md:p-8 md:flex justify-center items-center">
       <div className="flex gap-4 justify-center max-md:flex-col">
@@ -38,11 +48,11 @@ const Profile = () => {
           <FaUserCircle className="text-8xl" />
           <div className="flex flex-col gap-4 items-center font-mulish">
             <div className="flex flex-col items-center gap-2">
-              <span>{name}</span>
+              <span>{user.name}</span>
               <span className="text-slate-400 text-sm">User</span>
             </div>
-            <span>{email}</span>
-            <span>+91 {phone}</span>
+            <span>{user.email}</span>
+            <span>+91 {user.phone}</span>
           </div>
         </div>
         <div
@@ -83,7 +93,7 @@ const Profile = () => {
                   type="text"
                   name="email"
                   id="email"
-                  defaultValue={email}
+                  defaultValue={user.email}
                   placeholder="Email"
                   disabled
                   title="Email cannot be changed!"

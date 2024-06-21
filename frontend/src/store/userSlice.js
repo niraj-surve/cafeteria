@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import toast from "react-hot-toast";
+import StatusCode from "../util/StatusCode";
 
 const apiURL = import.meta.env.VITE_APP_API_URL;
 
@@ -126,10 +127,10 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.pending, (state) => {
-        state.status = "loading";
+        state.status = StatusCode.LOADING;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        state.status = StatusCode.IDLE;
         state.user = action.payload;
         localStorage.setItem("user", JSON.stringify(action.payload));
         toast.success("Login Successful!", {
@@ -138,7 +139,7 @@ const userSlice = createSlice({
         });
       })
       .addCase(loginUser.rejected, (state, action) => {
-        state.status = "failed";
+        state.status = StatusCode.ERROR;
         state.error = action.error.message;
         toast.error("Invalid Credentials!", {
           position: "bottom-right",
@@ -146,17 +147,17 @@ const userSlice = createSlice({
         });
       })
       .addCase(registerUser.pending, (state) => {
-        state.status = "loading";
+        state.status = StatusCode.LOADING;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        state.status = StatusCode.IDLE;
         toast.success("Registration Successful!", {
           position: "bottom-right",
           duration: 3000,
         });
       })
       .addCase(registerUser.rejected, (state, action) => {
-        state.status = "failed";
+        state.status = StatusCode.ERROR;
         state.error = action.error.message;
         toast.error(action.error.message || "Failed to register the user", {
           position: "bottom-right",
@@ -164,18 +165,18 @@ const userSlice = createSlice({
         });
       })
       .addCase(checkLoginStatus.pending, (state) => {
-        state.status = "loading";
+        state.status = StatusCode.LOADING;
       })
       .addCase(checkLoginStatus.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        state.status = StatusCode.IDLE;
         state.user = action.payload;
       })
       .addCase(checkLoginStatus.rejected, (state, action) => {
-        state.status = "failed";
+        state.status = StatusCode.ERROR;
         state.error = action.error.message;
       })
       .addCase(toggleFavorite.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        state.status = StatusCode.IDLE;
         state.user.favourites = action.payload;
 
         const updatedFavourites = action.payload;
@@ -209,7 +210,7 @@ const userSlice = createSlice({
         localStorage.setItem("user", JSON.stringify(user));
       })
       .addCase(toggleFavorite.rejected, (state, action) => {
-        state.status = "failed";
+        state.status = StatusCode.ERROR;
         state.error = action.error.message;
         toast.error("Failed to update favorites!", {
           position: "bottom-right",
@@ -217,10 +218,10 @@ const userSlice = createSlice({
         });
       })
       .addCase(updateProfile.pending, (state) => {
-        state.status = "loading";
+        state.status = StatusCode.LOADING;
       })
       .addCase(updateProfile.fulfilled, (state, action) => {
-        state.status = "succeeded";
+        state.status = StatusCode.IDLE;
         state.user = action.payload;
         localStorage.setItem("user", JSON.stringify(action.payload));
         toast.success("Profile updated!", {
@@ -229,7 +230,7 @@ const userSlice = createSlice({
         })
       })
       .addCase(updateProfile.rejected, (state, action) => {
-        state.status = "failed";
+        state.status = StatusCode.ERROR;
         state.error = action.error.message;
         toast.error(action.error.message || "Failed to update profile", {
           position: "bottom-right",

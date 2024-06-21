@@ -68,7 +68,7 @@ const Navbar = () => {
                 to="/profile"
               >
                 <FaUser className="text-xl text-primary" />
-                <span>{user.name.split(' ')[0]}</span>
+                <span className="mr-2">{user.name.split(' ')[0]}</span>
                 <IoIosArrowDown className="absolute right-0" />
               </Link>
               <div
