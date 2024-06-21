@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { selectUser } from "../../store/userSlice";
 import { clearCart } from "../../store/cartSlice";
 import { addOrder } from "../../store/orderSlice";
 import toast from "react-hot-toast";
+import { createPaymentSession } from "../../store/paymentSlice";
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -13,7 +14,6 @@ const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState("");
 
   const cartItems = useSelector((state) => state.cart.cartItems);
-  const session = useSelector((state) => state.payment.session);
   const user = useSelector(selectUser);
 
   const {
@@ -38,7 +38,7 @@ const Checkout = () => {
   const userId = storedUser ? storedUser.id : null;
   const token = storedUser ? storedUser.token : null;
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const orderData = {
       userId: userId,
       name: data.name,
@@ -73,7 +73,29 @@ const Checkout = () => {
           });
         });
     } else if (paymentMethod === "other") {
-      console.log("Online")
+      let paymentData = {
+        name: user?.name,
+        amount: totalPrice,
+        phone: user?.phone,
+        MID: "MID" + Date.now(),
+      };
+
+      try {
+        const resultAction = await dispatch(
+          createPaymentSession({ paymentData, token })
+        ).unwrap();
+        
+        localStorage.setItem("orderData", JSON.stringify(orderData));
+
+        window.location.href = resultAction;
+      } catch (error) {
+        console.error("Failed to create payment session: ", error);
+        toast.error("Failed to create payment session! Please try again.", {
+          position: "bottom-right",
+          duration: 3000,
+        });
+      }
+
     }
   };
 

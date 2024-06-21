@@ -22,6 +22,10 @@ const Order = () => {
           position: "bottom-right",
           duration: 3000,
         });
+        toast.success("Refund will be done within 24 hours!", {
+          position: "bottom-right",
+          duration: 3000,
+        });
         navigate("/orders")
       }
     });
@@ -75,7 +79,9 @@ const Order = () => {
           </p>
           <p className="mb-2">
             <span className="font-bold">Payment:</span>{" "}
-            {order.paymentOption === "cash" ? "Cash" : "Online Payment"}
+            {order.paymentOption === "cash"
+              ? `Cash (${order.paymentStatus})`
+              : `Online Payment (${order.paymentStatus})`}
           </p>
           <p className="mb-2">
             <span className="font-bold">Order Date:</span>{" "}
@@ -116,7 +122,7 @@ const Order = () => {
           </div>
         </div>
       </div>
-      {order.status === "pending" && (
+      {order.status === "Pending" && (
         <button
           onClick={() => handleCancelOrder(order.orderId)}
           className="w-fit self-end btn-transition text-sm bg-primary hover:bg-white border border-primary text-white hover:text-primary px-4 py-2 rounded focus"

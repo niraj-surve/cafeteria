@@ -29,8 +29,9 @@ const orderSchema = new mongoose.Schema({
   products: [orderProductSchema],
   name: { type: String, required: true },
   totalPrice: { type: Number, required: true },
-  status: { type: String, default: "pending" },
+  status: { type: String, default: "Pending" },
   paymentOption: { type: String, required: true },
+  paymentStatus: { type: String, default: "Pending" },
   orderDate: { type: Date, default: Date.now },
 });
 

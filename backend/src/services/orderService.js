@@ -27,6 +27,7 @@ export const addOrder = async (req, res) => {
       name,
       totalPrice,
       paymentOption,
+      paymentStatus: paymentOption === "other" ? "Paid" : "Pending",
       orderDate: new Date(),
     };
 

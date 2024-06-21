@@ -11,6 +11,7 @@ import Register from "./pages/Register/Register";
 import Checkout from "./pages/Checkout/Checkout";
 import Orders from "./components/Orders/Orders";
 import Order from "./pages/Order/Order";
+import SuccessPayment from "./components/SuccessPayment/SuccessPayment";
 
 const AppRoutes = () => {
   const dispatch = useDispatch();
@@ -38,6 +39,7 @@ const AppRoutes = () => {
     { path: "/orders", element: <Orders /> },
     { path: "/orders/:orderId", element: <Order /> },
     { path: "/cart/checkout", element: <Checkout /> },
+    { path: "/successPayment", element: <SuccessPayment /> },
   ];
 
   const renderRoutes = user ? authRoutes : guestRoutes;

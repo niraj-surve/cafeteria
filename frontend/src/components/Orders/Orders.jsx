@@ -95,7 +95,7 @@ const Orders = () => {
                     </div>
                   </div>
                 </Link>
-                {order.status === "pending" && (
+                {order.status === "Pending" && (
                   <button
                     onClick={() => handleCancelOrder(order.orderId)}
                     className="btn-transition text-sm bg-primary hover:bg-white border border-primary text-white hover:text-primary px-4 py-2 rounded focus"
