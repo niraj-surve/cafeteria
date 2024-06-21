@@ -1,6 +1,11 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const apiSecret = process.env.API_SECRET;
 
 export const register = async (req, res) => {
   const { name, email, phone, password, isAdmin, favourites } =
@@ -128,7 +133,7 @@ export const generateTokenResponse = (user) => {
       email: user.email,
       isAdmin: user.isAdmin,
     },
-    "mysecret",
+    apiSecret,
     {
       expiresIn: "30d",
     }
