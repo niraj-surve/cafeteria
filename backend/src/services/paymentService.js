@@ -6,6 +6,8 @@ dotenv.config();
 
 const paymentId = process.env.PAYMENT_ID;
 const paymentSecret = process.env.PAYMENT_SECRET;
+const serverURL = process.env.SERVER_URL;
+const clientURL = process.env.CLIENT_URL;
 
 export const createPaymentSession = async (req, res) => {
   try {
@@ -17,7 +19,7 @@ export const createPaymentSession = async (req, res) => {
       merchantUserId: req.body.MID,
       name: req.body.name,
       amount: req.body.amount * 100,
-      redirectUrl: `http://localhost:3000/api/v1/payment/${merchantTransactionId}`,
+      redirectUrl: `${serverURL}/api/v1/payment/${merchantTransactionId}`,
       redirectMode: "POST",
       mobileNumber: req.body.phone,
       paymentInstrument: {
@@ -92,7 +94,7 @@ export const validatePayment = async (req, res) => {
       .then((response) => {
         if (response.data.success) {
           res.redirect(
-            "http://localhost:5173/successPayment?status=success"
+            `${clientURL}/successPayment?status=success`
           );
         } else {
           res.status(400).send("Payment verification failed");
