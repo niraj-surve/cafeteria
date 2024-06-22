@@ -50,9 +50,15 @@
 <br>&emsp;`PAYMENT_SECRET = 96434309-7796-489d-8924-ab56988a6076`
 <br>&emsp;`API_SECRET = secret1234`
 <br>&emsp;`MONGO_URI = <YOUR_MONGO_URL>`
-> Replace <YOUR_MONGO_URL> with your mongoDB atlas connection string<br><br>
-Go to [MongoDB Atlas](https://www.mongodb.com/products/platform/atlas-database) to create mongodb cloud database
+> Replace <YOUR_MONGO_URL> with your mongoDB atlas connection string.<br><br>
+Go to [MongoDB Atlas](https://www.mongodb.com/products/platform/atlas-database) to create mongodb cloud database.
 
+<br>&emsp;`MAILGUN_API_KEY= <YOUR_MAILGUN_API_KEY>`
+<br>&emsp;`MAILGUN_DOMAIN= <YOUR_MAILGUN_DOMAIN>`
+> Replace <YOUR_MAILGUN_API_KEY> and <YOUR_MAILGUN_DOMAIN> with your Mailgun api key and domain respectively<br><br>
+Go to [Mailgun](https://login.mailgun.com/login/) to login to your Mailgun account and create api key.
+
+<br>
 <br>
 
 **5. Open the `paymentService.js` file from following path**

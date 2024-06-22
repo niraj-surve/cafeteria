@@ -102,6 +102,35 @@ export const toggleFavorite = createAsyncThunk(
   }
 );
 
+// New async thunk for forgot password
+export const forgotPassword = createAsyncThunk(
+  "user/forgotPassword",
+  async (email) => {
+    try {
+      const response = await axios.post(`${apiURL}/user/forgot-password`, { email });
+      return response.data;
+    } catch (error) {
+      throw Error(error.response.data.message || "Failed to process forgot password request");
+    }
+  }
+);
+
+// New async thunk for reset password
+export const resetPassword = createAsyncThunk(
+  "user/resetPassword",
+  async ({ resetToken, newPassword }) => {
+    try {
+      const response = await axios.post(`${apiURL}/user/reset-password`, {
+        resetToken,
+        newPassword,
+      });
+      return response.data;
+    } catch (error) {
+      throw Error(error.response.data.message || "Failed to reset password");
+    }
+  }
+);
+
 const initialState = {
   user: null,
   status: "idle",
@@ -226,13 +255,49 @@ const userSlice = createSlice({
         localStorage.setItem("user", JSON.stringify(action.payload));
         toast.success("Profile updated!", {
           position: "bottom-right",
-          duration: 3000
-        })
+          duration: 3000,
+        });
       })
       .addCase(updateProfile.rejected, (state, action) => {
         state.status = StatusCode.ERROR;
         state.error = action.error.message;
         toast.error(action.error.message || "Failed to update profile", {
+          position: "bottom-right",
+          duration: 3000,
+        });
+      })
+      .addCase(forgotPassword.pending, (state) => {
+        state.status = StatusCode.LOADING;
+      })
+      .addCase(forgotPassword.fulfilled, (state) => {
+        state.status = StatusCode.IDLE;
+        toast.success("Password reset email sent!", {
+          position: "bottom-right",
+          duration: 3000,
+        });
+      })
+      .addCase(forgotPassword.rejected, (state, action) => {
+        state.status = StatusCode.ERROR;
+        state.error = action.error.message;
+        toast.error(action.error.message || "Failed to send reset email", {
+          position: "bottom-right",
+          duration: 3000,
+        });
+      })
+      .addCase(resetPassword.pending, (state) => {
+        state.status = StatusCode.LOADING;
+      })
+      .addCase(resetPassword.fulfilled, (state) => {
+        state.status = StatusCode.IDLE;
+        toast.success("Password has been reset successfully!", {
+          position: "bottom-right",
+          duration: 3000,
+        });
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
+        state.status = StatusCode.ERROR;
+        state.error = action.error.message;
+        toast.error(action.error.message || "Failed to reset password", {
           position: "bottom-right",
           duration: 3000,
         });

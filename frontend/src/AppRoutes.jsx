@@ -13,6 +13,8 @@ import Orders from "./components/Orders/Orders";
 import Order from "./pages/Order/Order";
 import SuccessPayment from "./components/SuccessPayment/SuccessPayment";
 import Profile from "./pages/Profile/Profile";
+import ResetPassword from "./pages/ResetPassword/ResetPassword";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 
 const AppRoutes = () => {
   const dispatch = useDispatch();
@@ -25,6 +27,8 @@ const AppRoutes = () => {
   const guestRoutes = [
     { path: "/login", element: <Login /> },
     { path: "/register", element: <Register /> },
+    { path: "/forgot-password", element: <ForgotPassword /> },
+    { path: "/reset-password/:resetToken", element: <ResetPassword /> },
     { path: "/cart/checkout", element: <Navigate to="/" replace /> },
     { path: "/orders", element: <Navigate to="/" replace /> },
     { path: "/orders/:orderId", element: <Navigate to="/" replace /> },

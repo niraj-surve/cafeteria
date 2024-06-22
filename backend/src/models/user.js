@@ -49,6 +49,8 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   phone: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  resetPasswordToken: { type: String, default: null },
+  resetPasswordExpires: { type: Date, default: null },
   isAdmin: { type: Boolean, default: false },
   favourites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
   cart: [cartItemSchema],
