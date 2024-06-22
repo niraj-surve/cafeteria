@@ -9,6 +9,7 @@ dotenv.config();
 
 const apiSecret = process.env.API_SECRET;
 const mailgunDomain = process.env.MAILGUN_DOMAIN;
+const clientURL = process.env.CLIENT_URL;
 
 export const forgotPassword = async (req, res) => {
   try {
@@ -112,7 +113,7 @@ const getResetPasswordHtml = (resetToken) => {
             link, or paste this into your browser to complete the process:
         </p>
         <div class="btn">
-            <a href="http://localhost:5173/reset-password/${resetToken}">
+            <a href="${clientURL}/reset-password/${resetToken}">
                 <button>Reset Password</button>
             </a>
         </div>
