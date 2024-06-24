@@ -69,7 +69,7 @@ const Product = () => {
   const isFavourite = user && user.favourites.includes(product._id);
 
   return (
-    <div className="max-w-4xl h-[calc(100vh-64px)] mx-auto p-8">
+    <div className="max-w-4xl h-full mx-auto p-8">
       <div className="flex flex-col md:flex-row items-center md:items-start">
         <img
           src={`/products/${product?.image}`}
